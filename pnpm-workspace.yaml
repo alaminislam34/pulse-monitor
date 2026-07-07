@@ -1,0 +1,6 @@
+packages:
+  - '.'
+  - 'dashboard'
+allowBuilds:
+  '@nestjs/core': set this to true or false
+  esbuild: true
