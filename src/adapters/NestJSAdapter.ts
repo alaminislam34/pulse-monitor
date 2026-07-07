@@ -29,8 +29,9 @@ function discoverExpressRoutes(app: any): Array<{ path: string; method: string }
     });
   }
 
-  if (app._router && app._router.stack) {
-    traverse(app._router.stack);
+  const router = app._router || app.router;
+  if (router && router.stack) {
+    traverse(router.stack);
   }
   return routes;
 }

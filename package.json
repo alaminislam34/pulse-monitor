@@ -1,6 +1,6 @@
 {
   "name": "pulse-monitor",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Zero-impact backend monitoring tool for Express and NestJS",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -10,6 +10,16 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./express": {
+      "types": "./dist/express.d.ts",
+      "import": "./dist/express.js",
+      "require": "./dist/express.cjs"
+    },
+    "./nestjs": {
+      "types": "./dist/nestjs.d.ts",
+      "import": "./dist/nestjs.js",
+      "require": "./dist/nestjs.cjs"
     }
   },
   "files": [
@@ -26,9 +36,15 @@
     "@nestjs/core": ">=8.0.0"
   },
   "peerDependenciesMeta": {
-    "express": { "optional": true },
-    "@nestjs/common": { "optional": true },
-    "@nestjs/core": { "optional": true }
+    "express": {
+      "optional": true
+    },
+    "@nestjs/common": {
+      "optional": true
+    },
+    "@nestjs/core": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "tsup": "^8.0.0",
