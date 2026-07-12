@@ -52,7 +52,7 @@ export class Monitor {
       whitelistIps: config.whitelistIps ?? [],
       dashboardEndpoint: config.dashboardEndpoint ?? '/pulse',
       authSecret: config.authSecret ?? '',
-      logBodies: config.logBodies ?? false,
+      logBodies: config.logBodies ?? true,
       maxBodySizeKb: config.maxBodySizeKb ?? 64,
     };
 
