@@ -1,25 +1,35 @@
 {
-  "name": "pulse-monitor",
-  "version": "1.0.3",
+  "name": "@alaminislam34/server-monitor",
+  "version": "1.0.4",
   "description": "Zero-impact backend monitoring tool for Express and NestJS",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./express": {
       "types": "./dist/express.d.ts",
-      "import": "./dist/express.js",
-      "require": "./dist/express.cjs"
+      "import": "./dist/express.mjs",
+      "require": "./dist/express.js"
     },
     "./nestjs": {
       "types": "./dist/nestjs.d.ts",
-      "import": "./dist/nestjs.js",
-      "require": "./dist/nestjs.cjs"
+      "import": "./dist/nestjs.mjs",
+      "require": "./dist/nestjs.js"
+    },
+    "./dist/express": {
+      "types": "./dist/express.d.ts",
+      "import": "./dist/express.mjs",
+      "require": "./dist/express.js"
+    },
+    "./dist/nestjs": {
+      "types": "./dist/nestjs.d.ts",
+      "import": "./dist/nestjs.mjs",
+      "require": "./dist/nestjs.js"
     }
   },
   "files": [
