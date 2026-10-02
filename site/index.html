@@ -82,6 +82,7 @@
           <button class="tab-btn install-tab-btn active" data-pkg="npm">npm</button>
           <button class="tab-btn install-tab-btn" data-pkg="pnpm">pnpm</button>
           <button class="tab-btn install-tab-btn" data-pkg="pip">pip (Python)</button>
+          <button class="tab-btn install-tab-btn" data-pkg="go">Go</button>
           <button class="tab-btn install-tab-btn" data-pkg="yarn">yarn</button>
         </div>
         <div class="install-body">
@@ -318,6 +319,7 @@
       <div class="install-header">
         <button class="tab-btn code-tab-btn active" data-target="snippet-express">Express.js (Node)</button>
         <button class="tab-btn code-tab-btn" data-target="snippet-fastapi">FastAPI (Python)</button>
+        <button class="tab-btn code-tab-btn" data-target="snippet-go">Go (net/http & Gin)</button>
         <button class="tab-btn code-tab-btn" data-target="snippet-nestjs">NestJS</button>
         <button class="tab-btn code-tab-btn" data-target="snippet-django">Django (Python)</button>
       </div>
@@ -352,6 +354,24 @@ app.add_middleware(PulseMiddleware, endpoint=<span style="color: #a5b4fc;">"/pul
 <span style="color: #f472b6;">@app.get</span>(<span style="color: #a5b4fc;">"/api/v1/users"</span>)
 <span style="color: #f472b6;">def</span> <span style="color: #38bdf8;">get_users</span>():
     <span style="color: #f472b6;">return</span> [{<span style="color: #a5b4fc;">"id"</span>: <span style="color: #38bdf8;">1</span>, <span style="color: #a5b4fc;">"name"</span>: <span style="color: #a5b4fc;">"Alice"</span>}]</pre>
+        </div>
+
+        <!-- Go -->
+        <div id="snippet-go" class="code-snippet" style="display: none;">
+<pre style="color: #cbd5e1;"><span style="color: #f472b6;">package</span> main
+
+<span style="color: #f472b6;">import</span> (
+    <span style="color: #a5b4fc;">"net/http"</span>
+    <span style="color: #a5b4fc;">"github.com/alaminislam34/server-monitor/sdk/go/pulse"</span>
+)
+
+<span style="color: #f472b6;">func</span> <span style="color: #38bdf8;">main</span>() {
+    m := pulse.NewMonitor(pulse.Config{BasePath: <span style="color: #a5b4fc;">"/pulse"</span>})
+    mux := http.NewServeMux()
+
+    <span style="color: #64748b;">// 1-Line Pulse Middleware (Serves /pulse and monitors all routes)</span>
+    http.ListenAndServe(<span style="color: #a5b4fc;">":8080"</span>, pulse.HTTPMiddleware(m)(mux))
+}</pre>
         </div>
 
         <!-- NestJS -->
