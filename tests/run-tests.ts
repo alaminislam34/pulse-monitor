@@ -242,10 +242,122 @@ try {
 
     console.log('  ✅ Wire Protocol Compliance, Sanitization & SSE Stream tests passed!');
 
+    // 6. Test OpenAPI Ingestion & Contract Drift Detection
+    console.log('  - Testing OpenAPI Ingestion & Contract Drift Detection...');
+    const sampleOpenApi = {
+      openapi: '3.0.0',
+      info: { title: 'User Service', version: '1.0.0' },
+      paths: {
+        '/api/v1/users/{id}': {
+          get: {
+            summary: 'Get user by ID',
+            responses: {
+              '200': {
+                description: 'User found',
+                content: {
+                  'application/json': {
+                    schema: {
+                      type: 'object',
+                      required: ['id', 'email'],
+                      properties: {
+                        id: { type: 'string' },
+                        email: { type: 'string' },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const driftMonitor = new Monitor({
+      openApiSpec: sampleOpenApi,
+    });
+
+    assert.strictEqual(driftMonitor.getOpenApiManager().hasSpec(), true);
+    const documented = driftMonitor.getOpenApiManager().getDocumentedEndpoints();
+    assert.strictEqual(documented.length, 1);
+    assert.strictEqual(documented[0].path, '/api/v1/users/{id}');
+    assert.strictEqual(documented[0].method, 'GET');
+
+    // Case 1: Valid documented call
+    driftMonitor.recordRequest({
+      path: '/api/v1/users/100',
+      method: 'GET',
+      statusCode: 200,
+      durationMs: 8.1,
+      ip: '127.0.0.1',
+    }, {
+      headers: {},
+      query: {},
+      resBody: JSON.stringify({ id: '100', email: 'alice@example.com' }),
+    });
+
+    const requests1 = driftMonitor.getDashboardData().requests;
+    const validReq = requests1[requests1.length - 1];
+    assert.ok(validReq.drift);
+    assert.strictEqual(validReq.drift.isDocumented, true);
+    assert.strictEqual(validReq.drift.hasSchemaMismatch, false);
+
+    // Case 2: Undocumented route
+    driftMonitor.recordRequest({
+      path: '/api/v1/legacy-admin',
+      method: 'POST',
+      statusCode: 200,
+      durationMs: 4.2,
+      ip: '127.0.0.1',
+    });
+
+    const requests2 = driftMonitor.getDashboardData().requests;
+    const undocumentedReq = requests2[requests2.length - 1];
+    assert.ok(undocumentedReq.drift);
+    assert.strictEqual(undocumentedReq.drift.isDocumented, false);
+    assert.strictEqual(undocumentedReq.drift.driftCategory, 'UNDOCUMENTED_ROUTE');
+
+    // Case 3: Undocumented status code
+    driftMonitor.recordRequest({
+      path: '/api/v1/users/100',
+      method: 'GET',
+      statusCode: 500,
+      durationMs: 12.0,
+      ip: '127.0.0.1',
+    });
+
+    const requests3 = driftMonitor.getDashboardData().requests;
+    const statusMismatchReq = requests3[requests3.length - 1];
+    assert.ok(statusMismatchReq.drift);
+    assert.strictEqual(statusMismatchReq.drift.isDocumented, true);
+    assert.strictEqual(statusMismatchReq.drift.driftCategory, 'UNDOCUMENTED_STATUS');
+
+    // Case 4: Schema mismatch (missing required 'email')
+    driftMonitor.recordRequest({
+      path: '/api/v1/users/100',
+      method: 'GET',
+      statusCode: 200,
+      durationMs: 6.5,
+      ip: '127.0.0.1',
+    }, {
+      headers: {},
+      query: {},
+      resBody: JSON.stringify({ id: '100', nickname: 'Ali' }), // missing email!
+    });
+
+    const requests4 = driftMonitor.getDashboardData().requests;
+    const schemaMismatchReq = requests4[requests4.length - 1];
+    assert.ok(schemaMismatchReq.drift);
+    assert.strictEqual(schemaMismatchReq.drift.hasSchemaMismatch, true);
+    assert.strictEqual(schemaMismatchReq.drift.driftCategory, 'SCHEMA_MISMATCH');
+    assert.ok(schemaMismatchReq.drift.diff?.missingRequired?.includes('email'));
+
+    console.log('  ✅ OpenAPI Ingestion & Contract Drift Detection tests passed!');
+
     console.log('\n🎉 All Pulse Monitor unit tests completed successfully!');
     process.exit(0);
   } catch (err) {
-    console.error('  ❌ Route Discovery and Type Inference tests failed:', err);
+    console.error('  ❌ Tests failed:', err);
     process.exit(1);
   }
 })();

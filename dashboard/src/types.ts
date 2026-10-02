@@ -19,6 +19,26 @@ export interface SystemMetrics {
   eventLoopLag: number;
 }
 
+export interface OpenApiDriftResult {
+  isDocumented: boolean;
+  matchedOpenApiPath?: string;
+  hasSchemaMismatch: boolean;
+  driftCategory?: 'UNDOCUMENTED_ROUTE' | 'UNDOCUMENTED_STATUS' | 'SCHEMA_MISMATCH';
+  description?: string;
+  diff?: {
+    missingRequired?: string[];
+    undocumentedFields?: string[];
+  };
+}
+
+export interface DiscoveredEndpoint {
+  path: string;
+  method: string;
+  summary?: string;
+  tags?: string[];
+  operationId?: string;
+}
+
 export interface RequestMetrics {
   timestamp: number;
   path: string;
@@ -31,6 +51,7 @@ export interface RequestMetrics {
   resBody?: string;
   inferredReqType?: string;
   inferredResType?: string;
+  drift?: OpenApiDriftResult;
 }
 
 export interface SecurityAlert {
@@ -48,6 +69,8 @@ export interface MonitorData {
   requests: RequestMetrics[];
   threats: SecurityAlert[];
   discoveredRoutes?: Array<{ path: string; method: string }>;
+  documentedRoutes?: DiscoveredEndpoint[];
+  hasOpenApiSpec?: boolean;
   config: {
     enableThreatDetection: boolean;
     maxBufferSize: number;
@@ -55,6 +78,8 @@ export interface MonitorData {
     dashboardEndpoint: string;
     hasAuth: boolean;
     logBodies?: boolean;
+    serviceName?: string;
+    openApiSpecUrl?: string;
   };
 }
 
