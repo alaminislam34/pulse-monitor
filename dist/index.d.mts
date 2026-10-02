@@ -1,4 +1,5 @@
 export { M as Monitor, a as MonitorConfig, R as RequestMetrics, S as SecurityAlert, T as ThreatDetector } from './Monitor-CZXJErmJ.mjs';
+export { expressPulseMiddleware } from './express.mjs';
 
 /**
  * A fast, memory-efficient Circular Buffer implementation.
