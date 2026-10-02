@@ -177,6 +177,71 @@ try {
     assert.strictEqual(reqLog.inferredResType, '{ success: boolean; token: string }');
 
     console.log('  ✅ Route Discovery and Type Inference tests passed!');
+
+    // 5. Test Wire Protocol, Sanitization & Stream
+    console.log('  - Testing Wire Protocol Compliance, Sanitization & SSE Stream...');
+    const protoMonitor = new Monitor({
+      serviceName: 'Test Service',
+      openApiSpecUrl: '/openapi.json',
+    });
+
+    // Sanitization test
+    const sanitizedHeaders = protoMonitor.sanitizeHeaders({
+      'content-type': 'application/json',
+      'authorization': 'Bearer secret-jwt-token',
+      'cookie': 'session=abc',
+    });
+    assert.strictEqual(sanitizedHeaders['content-type'], 'application/json');
+    assert.strictEqual(sanitizedHeaders['authorization'], '[REDACTED]');
+    assert.strictEqual(sanitizedHeaders['cookie'], '[REDACTED]');
+
+    const sanitizedPayload = protoMonitor.sanitizePayload({
+      user: 'alice',
+      password: 'mypassword123',
+      nested: {
+        token: 'secret-token-xyz',
+        publicNote: 'hello',
+      },
+    });
+    assert.strictEqual(sanitizedPayload.user, 'alice');
+    assert.strictEqual(sanitizedPayload.password, '[REDACTED]');
+    assert.strictEqual(sanitizedPayload.nested.token, '[REDACTED]');
+    assert.strictEqual(sanitizedPayload.nested.publicNote, 'hello');
+
+    // Protocol meta test
+    const meta = protoMonitor.getProtocolMeta();
+    assert.strictEqual(meta.protocolVersion, '0.1.0');
+    assert.strictEqual(meta.serviceName, 'Test Service');
+    assert.strictEqual(meta.openApiSpecUrl, '/openapi.json');
+    assert.strictEqual(meta.features.openApiDrift, true);
+
+    // Stream & canonical events test
+    const receivedEvents: any[] = [];
+    const unsubscribe = protoMonitor.subscribeStream((ev) => {
+      receivedEvents.push(ev);
+    });
+
+    protoMonitor.recordRequest({
+      path: '/api/v1/test',
+      method: 'GET',
+      statusCode: 200,
+      durationMs: 5.2,
+      ip: '127.0.0.1',
+    });
+
+    assert.ok(receivedEvents.length >= 1);
+    assert.strictEqual(receivedEvents[0].type, 'request');
+    assert.strictEqual(receivedEvents[0].request.path, '/api/v1/test');
+
+    unsubscribe();
+
+    const canonicalEvents = protoMonitor.getCanonicalEvents({ type: 'request' });
+    assert.strictEqual(canonicalEvents.length, 1);
+    assert.strictEqual(canonicalEvents[0].type, 'request');
+    assert.strictEqual(canonicalEvents[0].response.statusCode, 200);
+
+    console.log('  ✅ Wire Protocol Compliance, Sanitization & SSE Stream tests passed!');
+
     console.log('\n🎉 All Pulse Monitor unit tests completed successfully!');
     process.exit(0);
   } catch (err) {
