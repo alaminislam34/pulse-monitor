@@ -14,6 +14,8 @@ export interface MonitorConfig {
   authSecret?: string;
   logBodies?: boolean;
   maxBodySizeKb?: number;
+  serviceName?: string;
+  openApiSpecUrl?: string;
 }
 
 export interface RequestMetrics {
@@ -41,7 +43,7 @@ export class Monitor {
   private eventLoopLag: number = 0;
   private lastEventLoopTime: number = Date.now();
   private discoveredRoutes: Array<{ path: string; method: string }> = [];
-  public hasScannedRoutes: boolean = false;
+  private streamSubscribers: Set<(event: any) => void> = new Set();
 
   constructor(config: MonitorConfig = {}) {
     this.startTime = Date.now();
@@ -54,6 +56,8 @@ export class Monitor {
       authSecret: config.authSecret ?? '',
       logBodies: config.logBodies ?? true,
       maxBodySizeKb: config.maxBodySizeKb ?? 64,
+      serviceName: config.serviceName ?? 'Pulse API Service',
+      openApiSpecUrl: config.openApiSpecUrl ?? '',
     };
 
     this.metricsBuffer = new CircularBuffer<RequestMetrics>(this.config.maxBufferSize);
@@ -186,6 +190,62 @@ export class Monitor {
     return `{ ${fields.join('; ')} }`;
   }
 
+  public sanitizeHeaders(headers: Record<string, any> = {}): Record<string, any> {
+    const sensitive = ['authorization', 'cookie', 'set-cookie', 'x-api-key', 'jwt', 'token'];
+    const sanitized: Record<string, any> = {};
+    for (const [k, v] of Object.entries(headers)) {
+      if (sensitive.includes(k.toLowerCase())) {
+        sanitized[k] = '[REDACTED]';
+      } else {
+        sanitized[k] = v;
+      }
+    }
+    return sanitized;
+  }
+
+  public sanitizePayload(body: any): any {
+    if (!body) return body;
+    if (typeof body === 'string') {
+      try {
+        const parsed = JSON.parse(body);
+        return JSON.stringify(this.sanitizePayload(parsed));
+      } catch {
+        return body;
+      }
+    }
+    if (typeof body !== 'object') return body;
+    if (Array.isArray(body)) {
+      return body.map(item => this.sanitizePayload(item));
+    }
+    const sensitive = ['password', 'passwd', 'secret', 'credit_card', 'cvv', 'token', 'ssn', 'apikey', 'api_key'];
+    const sanitized: Record<string, any> = {};
+    for (const [k, v] of Object.entries(body)) {
+      if (sensitive.some(s => k.toLowerCase().includes(s))) {
+        sanitized[k] = '[REDACTED]';
+      } else {
+        sanitized[k] = this.sanitizePayload(v);
+      }
+    }
+    return sanitized;
+  }
+
+  public subscribeStream(subscriber: (event: any) => void): () => void {
+    this.streamSubscribers.add(subscriber);
+    return () => {
+      this.streamSubscribers.delete(subscriber);
+    };
+  }
+
+  public broadcastEvent(event: any): void {
+    for (const sub of this.streamSubscribers) {
+      try {
+        sub(event);
+      } catch {
+        this.streamSubscribers.delete(sub);
+      }
+    }
+  }
+
   /**
    * Main entrypoint to record a request and check for security threats.
    */
@@ -215,11 +275,39 @@ export class Monitor {
       if (alert) {
         this.securityBuffer.push(alert);
         console.warn(`⚠️ [PulseMonitor Security Alert] ${alert.attackType} from ${alert.ip} on ${alert.method} ${alert.path} (Severity: ${alert.severity})`);
+        this.broadcastEvent({
+          id: `thr_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+          type: 'threat',
+          timestamp: alert.timestamp,
+          threatType: alert.attackType,
+          severity: alert.severity,
+          targetField: 'request',
+          matchedPattern: alert.details,
+          clientIp: alert.ip,
+          userAgent: reqDetails.headers?.['user-agent'] as string | undefined,
+        });
       }
     }
 
     // 2. Offload metrics depending on environment
     this.metricsBuffer.push(metrics);
+
+    // 3. Broadcast to real-time subscribers (SSE)
+    this.broadcastEvent({
+      id: `req_${metrics.timestamp}_${Math.random().toString(36).substring(2, 6)}`,
+      type: 'request',
+      timestamp: metrics.timestamp,
+      request: {
+        method: metrics.method,
+        path: metrics.path,
+        ip: metrics.ip,
+        userAgent: metrics.userAgent,
+      },
+      response: {
+        statusCode: metrics.statusCode,
+        durationMs: metrics.durationMs,
+      },
+    });
 
     if (this.isServerless) {
       if (reqDetails && this.config.logBodies) {
@@ -329,8 +417,87 @@ export class Monitor {
         dashboardEndpoint: this.config.dashboardEndpoint,
         hasAuth: !!this.config.authSecret,
         logBodies: this.config.logBodies,
+        serviceName: this.config.serviceName,
+        openApiSpecUrl: this.config.openApiSpecUrl,
       },
     };
+  }
+
+  /**
+   * Returns host and runtime metadata compliant with SPEC.md
+   */
+  public getProtocolMeta() {
+    return {
+      protocolVersion: '0.1.0',
+      runtime: {
+        language: 'node',
+        framework: 'express',
+        version: process.version,
+      },
+      serviceName: this.config.serviceName,
+      bufferSize: this.config.maxBufferSize,
+      features: {
+        threatDetection: this.config.enableThreatDetection,
+        openApiDrift: !!this.config.openApiSpecUrl,
+        payloadInspection: this.config.logBodies,
+      },
+      openApiSpecUrl: this.config.openApiSpecUrl || undefined,
+    };
+  }
+
+  /**
+   * Returns canonical events array compliant with SPEC.md
+   */
+  public getCanonicalEvents(options: { limit?: number; since?: number; type?: string } = {}) {
+    const limit = options.limit ? Math.min(Number(options.limit), 1000) : 100;
+    const since = options.since ? Number(options.since) : 0;
+    const filterType = options.type || 'all';
+
+    const events: any[] = [];
+
+    if (filterType === 'all' || filterType === 'request') {
+      const requests = this.metricsBuffer.toArray()
+        .filter(r => r.timestamp >= since)
+        .map(r => ({
+          id: `req_${r.timestamp}_${Math.random().toString(36).substring(2, 7)}`,
+          type: 'request',
+          timestamp: r.timestamp,
+          request: {
+            method: r.method,
+            path: r.path,
+            ip: r.ip,
+            userAgent: r.userAgent,
+            body: r.reqBody,
+            inferredSchema: r.inferredReqType,
+          },
+          response: {
+            statusCode: r.statusCode,
+            durationMs: r.durationMs,
+            body: r.resBody,
+            inferredSchema: r.inferredResType,
+          },
+        }));
+      events.push(...requests);
+    }
+
+    if (filterType === 'all' || filterType === 'threat') {
+      const threats = this.securityBuffer.toArray()
+        .filter(t => t.timestamp >= since)
+        .map(t => ({
+          id: `thr_${t.timestamp}_${Math.random().toString(36).substring(2, 7)}`,
+          type: 'threat',
+          timestamp: t.timestamp,
+          threatType: t.attackType,
+          severity: t.severity,
+          targetField: 'request',
+          matchedPattern: t.details,
+          clientIp: t.ip,
+        }));
+      events.push(...threats);
+    }
+
+    events.sort((a, b) => b.timestamp - a.timestamp);
+    return events.slice(0, limit);
   }
 
   /**
@@ -360,9 +527,19 @@ export class Monitor {
       path.join(process.cwd(), 'dist', 'ui', 'index.html'),
     ];
 
+    const configScript = `<script>window.__PULSE_CONFIG__ = ${JSON.stringify({
+      apiPrefix: `${this.config.dashboardEndpoint}/api`,
+      streamPrefix: `${this.config.dashboardEndpoint}/api/stream`,
+      openApiUrl: this.config.openApiSpecUrl || undefined,
+      serviceName: this.config.serviceName,
+    })};</script>`;
+
     for (const p of pathsToTry) {
       if (fs.existsSync(p)) {
-        return fs.readFileSync(p, 'utf8');
+        const raw = fs.readFileSync(p, 'utf8');
+        return raw.includes('</head>')
+          ? raw.replace('</head>', `${configScript}</head>`)
+          : `${configScript}${raw}`;
       }
     }
 
