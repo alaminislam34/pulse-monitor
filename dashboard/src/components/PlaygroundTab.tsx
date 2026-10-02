@@ -306,10 +306,16 @@ export function PlaygroundTab({
         <h4 style={{ fontSize: '0.95rem', fontWeight: 600 }}>Response</h4>
 
         {!pgResponse && !pgLoading && (
-          <div className="flex-center" style={{ flexGrow: 1, flexDirection: 'column', color: 'var(--text-muted)', fontSize: '0.8rem', textAlign: 'center', gap: '0.5rem' }}>
-            <Play size={24} style={{ opacity: 0.15 }} />
-            <span>No response yet</span>
-            <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>Compose a request and hit Send to inspect status, headers and body output.</span>
+          <div className="flex-center" style={{ flexGrow: 1, flexDirection: 'column', color: 'var(--text-muted)', fontSize: '0.8rem', textAlign: 'center', gap: '0.75rem', padding: '3rem 1.5rem', border: '1px dashed var(--border-color)', borderRadius: 'var(--radius-md)', background: 'var(--bg-hover)' }}>
+            <div className="flex-center" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--bg-card)', border: '1px solid var(--border-color)', color: 'var(--accent-primary)' }}>
+              <Play size={16} fill="currentColor" />
+            </div>
+            <div>
+              <div style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.25rem' }}>No response yet</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-light)', maxWidth: '320px', lineHeight: 1.4 }}>
+                Compose a request on the left and click <strong>Send</strong> to inspect status code, headers, and body output.
+              </div>
+            </div>
           </div>
         )}
 

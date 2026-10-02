@@ -154,7 +154,7 @@
     font-family: var(--font-mono);
 }
 
-/* Responsive Utilities */
+/* Responsive Utilities & Mobile Drawer */
 @media (max-width: 768px) {
     .desktop-only {
         display: none !important;
@@ -162,10 +162,183 @@
     .mobile-only {
         display: flex !important;
     }
+    
+    .mobile-drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 300px;
+        max-width: 85vw;
+        background: var(--bg-card);
+        z-index: 1000;
+        box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        border-left: 1px solid var(--border-color);
+    }
+    
+    .mobile-drawer.open {
+        transform: translateX(0);
+    }
+
+    .drawer-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(4px);
+        z-index: 999;
+    }
+
+    .mobile-search-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 0.75rem 1rem;
+        background: var(--bg-card);
+        border-bottom: 1px solid var(--border-color);
+        z-index: 1001;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-search-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
 }
 
 @media (min-width: 769px) {
     .mobile-only {
         display: none !important;
     }
+    .mobile-drawer {
+        display: none !important;
+    }
+    .drawer-backdrop {
+        display: none !important;
+    }
+    .mobile-search-overlay {
+        display: none !important;
+    }
+}
+
+/* ── Drawer Internal Components ── */
+.drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.drawer-body {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: auto;
+}
+
+.drawer-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.25rem;
+}
+
+.avatar-lg {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+}
+
+.drawer-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 0.5rem 0;
+}
+
+.drawer-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    width: 100%;
+    text-align: left;
+}
+
+.drawer-item:hover {
+    background: var(--bg-hover);
+    color: var(--text-main);
+}
+
+.drawer-item.danger {
+    color: var(--accent-danger);
+}
+
+.drawer-badge {
+    margin-left: auto;
+    font-size: 0.75rem;
+}
+
+.drawer-poll {
+    padding: 0.5rem 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.drawer-poll-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.drawer-poll-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.35rem;
+}
+
+.poll-chip {
+    padding: 0.35rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s ease;
+}
+
+.poll-chip:hover {
+    background: var(--bg-hover);
+    color: var(--text-main);
+}
+
+.poll-chip.active {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
 }
