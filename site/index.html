@@ -3,16 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pulse Monitor - Universal Local-First API Cockpit & Telemetry</title>
-  <meta name="description" content="A zero-config, universal local-first API explorer, performance monitor, and OpenAPI schema drift watchdog. Works in Node.js, Python, Go, and more.">
+  <title>Pulse Monitor - The Universal API Cockpit for Builders</title>
+  <meta name="description" content="The modern, lightweight API test runner, OpenAPI schema drift watchdog, and real-time flight recorder for backend developers. Works in Node.js, Python, and Go.">
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300AA45' stroke-width='2.5'><path d='M22 12h-4l-3 9L9 3l-3 9H2'/></svg>">
 </head>
 <body>
-
-  <!-- Glow Background Accents -->
-  <div class="glow-orb-top"></div>
-  <div class="glow-orb-right"></div>
 
   <!-- Header Navigation -->
   <header>
@@ -20,28 +16,28 @@
       <div class="nav-inner">
         <a href="#" class="logo">
           <div class="logo-badge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
             </svg>
           </div>
           <span>Pulse Monitor</span>
-          <span class="badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; margin-left: 0.25rem;">v0.1.0-alpha</span>
         </a>
 
         <ul class="nav-links">
-          <li><a href="#simulator">Live Simulator</a></li>
           <li><a href="#features">Features</a></li>
+          <li><a href="#simulator">Live Studio</a></li>
+          <li><a href="#comparison">Comparison</a></li>
           <li><a href="#quickstart">Quickstart</a></li>
-          <li><a href="#comparison">Why Pulse?</a></li>
-          <li><a href="#spec">Specification</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="https://github.com/alaminislam34/pulse-monitor/blob/main/SPEC.md" target="_blank" rel="noopener">SPEC.md</a></li>
         </ul>
 
         <div class="nav-actions">
           <a href="https://github.com/alaminislam34/pulse-monitor" target="_blank" rel="noopener" class="btn btn-secondary">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
             </svg>
-            GitHub
+            Star on GitHub
           </a>
           <a href="#quickstart" class="btn btn-primary">Get Started</a>
         </div>
@@ -52,271 +48,206 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="container">
-      <div class="hero-pill">
-        <span class="dot"></span>
-        Zero Cloud • Local-First • Swagger-Compatible
-      </div>
+      <a href="#features" class="announcement-pill">
+        <span class="announcement-dot"></span>
+        <span>Universal Wire Protocol Specification v0.1.0 Ready</span>
+      </a>
+
       <h1 class="hero-title">
-        The Universal API Cockpit<br>
-        <span>Zero Config. Any Backend.</span>
+        The API Cockpit for builders to <em>test, trace & monitor</em>.
       </h1>
-      <p class="hero-desc">
-        Install with 1 line of code. Pulse Monitor embeds a blazing-fast dashboard into <code>/pulse</code>, catches OpenAPI schema drift in real time, and blocks security threats without sending a single byte to the cloud.
+
+      <p class="hero-subtitle">
+        Zero-config, sub-millisecond API explorer and real-time OpenAPI schema drift watchdog. Replaces bloated APM tools with a lightweight cockpit that runs 100% locally.
       </p>
 
-      <div class="hero-cta">
-        <a href="#simulator" class="btn btn-primary" style="padding: 0.85rem 1.75rem; font-size: 1rem;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polygon points="5 3 19 12 5 21 5 3"/>
-          </svg>
-          Try Live Simulator
-        </a>
-        <a href="#quickstart" class="btn btn-secondary" style="padding: 0.85rem 1.75rem; font-size: 1rem;">
-          Read 60-Sec Quickstart
-        </a>
+      <!-- Peerlist-Style Pill Command Claim Bar -->
+      <div class="claim-bar-wrapper">
+        <div class="claim-bar">
+          <span class="claim-prefix">$</span>
+          <input type="text" id="installCode" class="claim-input" value="npm install @alaminislam34/server-monitor" readonly>
+          <button id="copyInstallBtn" class="claim-btn">Copy Command</button>
+        </div>
       </div>
 
-      <!-- Quick Install Box -->
-      <div class="install-card">
-        <div class="install-header">
-          <button class="tab-btn install-tab-btn active" data-pkg="npm">npm</button>
-          <button class="tab-btn install-tab-btn" data-pkg="pnpm">pnpm</button>
-          <button class="tab-btn install-tab-btn" data-pkg="pip">pip (Python)</button>
-          <button class="tab-btn install-tab-btn" data-pkg="go">Go</button>
-          <button class="tab-btn install-tab-btn" data-pkg="yarn">yarn</button>
+      <!-- Ecosystem Ribbon -->
+      <div class="community-ribbon">
+        <div class="stack-badges">
+          <span class="stack-tag">🟢 Node.js</span>
+          <span class="stack-tag">⚡ Express</span>
+          <span class="stack-tag">🦁 NestJS</span>
+          <span class="stack-tag">🐍 Python</span>
+          <span class="stack-tag">🚀 FastAPI</span>
+          <span class="stack-tag">🔵 Go (net/http & Gin)</span>
+          <span class="stack-tag">📑 OpenAPI 3.0</span>
         </div>
-        <div class="install-body">
-          <span id="installCode">npm install pulse-monitor</span>
-          <button id="copyInstallBtn" class="copy-btn" title="Copy command">📋 Copy</button>
-        </div>
+        <p class="community-text">Built for high-velocity backend engineering teams • Zero cloud telemetry dependencies</p>
       </div>
     </div>
   </section>
 
-  <!-- Interactive Live Simulator Section -->
-  <section id="simulator" class="demo-section">
+  <!-- Features Grid -->
+  <section id="features" class="container" style="padding-top: 2rem;">
+    <div class="section-head">
+      <div class="section-tag">Why Builders Choose Pulse</div>
+      <h2 class="section-title">Everything you need to ship confident APIs.</h2>
+      <p class="section-subtitle">
+        Swagger documents the plan. Pulse Monitor validates the execution against real traffic in real time.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon-badge">🎯</div>
+        <h3>Real-Time Contract Drift</h3>
+        <p>
+          Catch missing response fields, undocumented query parameters, and unversioned 500 errors live as your frontend makes requests. Never let code drift out of sync with your OpenAPI spec.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-badge">⚡</div>
+        <h3>1-Click "Replay & Test" Runner</h3>
+        <p>
+          Don't copy-paste failing payloads to Postman. Click any captured request to load it directly into Pulse's built-in interactive runner, tweak parameters, and re-run instantly.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon-badge">🛡️</div>
+        <h3>Security & Privacy Watchdog</h3>
+        <p>
+          Automatic real-time detection of SQL injections, XSS attempts, and path traversal probes. Sensitive tokens, passwords, and authorization headers are scrubbed locally before display.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Cockpit Studio / Simulator -->
+  <section id="simulator" class="simulator-section">
     <div class="container">
       <div class="section-head">
         <div class="section-tag">Interactive Demonstration</div>
-        <h2 class="section-title">Experience Pulse in Real Time</h2>
+        <h2 class="section-title">Experience the live flight recorder.</h2>
         <p class="section-subtitle">
-          Test real-time event ingestion, schema drift detection, and threat inspection right in your browser. Click the action buttons to simulate live backend traffic.
+          Test real-time event streaming, drift detection, and threat inspection right here in your browser. Click any simulated request below.
         </p>
       </div>
 
       <div class="cockpit-simulator">
         <!-- Controls Left -->
         <div class="simulator-controls">
-          <div class="controller-card">
+          <div>
             <div class="controller-title">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 20V10M12 20V4M6 20v-6"/>
-              </svg>
-              Live Traffic Generator
+              <span>Traffic Generator</span>
             </div>
-            <div class="sim-btn-group">
-              <button id="btnSimValid" class="sim-btn sim-valid">
-                <span class="sim-icon">⚡</span>
-                <div>
-                  <div>Simulate 200 OK Request</div>
-                  <div class="sim-desc">GET /api/v1/users/:id (Contract Verified)</div>
-                </div>
-              </button>
-
-              <button id="btnSimDrift" class="sim-btn sim-drift">
-                <span class="sim-icon">⚠️</span>
-                <div>
-                  <div>Trigger Schema Drift</div>
-                  <div class="sim-desc">Returns payload missing required 'status'</div>
-                </div>
-              </button>
-
-              <button id="btnSimAttack" class="sim-btn sim-attack">
-                <span class="sim-icon">🛡️</span>
-                <div>
-                  <div>Simulate SQL Injection</div>
-                  <div class="sim-desc">Matches SQLi signature in query params</div>
-                </div>
-              </button>
-
-              <button id="btnSimSlow" class="sim-btn">
-                <span class="sim-icon">⏱️</span>
-                <div>
-                  <div>Simulate Latency Spike</div>
-                  <div class="sim-desc">POST /api/analytics (800ms response)</div>
-                </div>
-              </button>
-            </div>
-          </div>
-
-          <div class="controller-card">
-            <div class="controller-title">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 14 14"/>
-              </svg>
-              The Core Wedge
-            </div>
-            <p style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.5;">
-              Swagger UI only displays static documentation. Pulse Monitor continuously correlates active backend traffic against your OpenAPI contract to flag schema drift before your frontend breaks.
+            <p class="controller-desc" style="margin-top: 0.35rem;">
+              Trigger live API scenarios to see how Pulse validates contracts and flags security risks.
             </p>
           </div>
+
+          <div class="sim-buttons-group">
+            <button class="sim-btn" id="simValidBtn">
+              <span>Valid 200 OK</span>
+              <span class="sim-badge success">Verified ✓</span>
+            </button>
+
+            <button class="sim-btn" id="simDriftBtn">
+              <span>Schema Drift (Missing Fields)</span>
+              <span class="sim-badge warning">Drift ⚠️</span>
+            </button>
+
+            <button class="sim-btn" id="simThreatBtn">
+              <span>SQL Injection Attack</span>
+              <span class="sim-badge danger">Threat 🚨</span>
+            </button>
+
+            <button class="sim-btn" id="simLatencyBtn">
+              <span>Latency Spike (450ms)</span>
+              <span class="sim-badge" style="background:#F3F4F6; color:#4B5563;">Slow ⏱</span>
+            </button>
+          </div>
+
+          <div style="padding-top: 1rem; border-top: 1px solid var(--border-light);">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">
+              Protocol Stats
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+              Wire Version: <code style="color: var(--emerald-primary); font-weight: 600;">v0.1.0</code><br>
+              Runtime Overhead: <code style="color: var(--emerald-primary); font-weight: 600;">&lt; 0.4ms</code><br>
+              Egress: <code style="color: var(--emerald-primary); font-weight: 600;">0 bytes (Local-First)</code>
+            </div>
+          </div>
         </div>
 
-        <!-- Cockpit Display Right -->
-        <div class="simulator-display">
-          <div class="cockpit-header">
-            <div class="cockpit-status">
-              <span class="status-beacon"></span>
-              <span>LIVE SSE STREAM CONNECTED</span>
-              <span class="badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981;">Sub-millisecond</span>
+        <!-- Terminal Screen Right -->
+        <div class="simulator-screen">
+          <div class="screen-header">
+            <div class="window-dots">
+              <div class="window-dot red"></div>
+              <div class="window-dot yellow"></div>
+              <div class="window-dot green"></div>
             </div>
-            <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-dim);">
-              http://localhost:3000/pulse
-            </div>
-          </div>
-
-          <!-- Metrics Row -->
-          <div class="cockpit-metrics">
-            <div class="metric-pill">
-              <div class="label">Total Requests</div>
-              <div id="metricTotalReq" class="value">142</div>
-            </div>
-            <div class="metric-pill">
-              <div class="label">Avg Latency</div>
-              <div id="metricAvgLatency" class="value">14ms</div>
-            </div>
-            <div class="metric-pill">
-              <div class="label">Threats Blocked</div>
-              <div id="metricThreatCount" class="value" style="color: var(--accent-danger);">3</div>
-            </div>
-            <div class="metric-pill">
-              <div class="label">Process CPU</div>
-              <div id="metricCpuLoad" class="value" style="color: var(--accent-cyan);">2.1%</div>
+            <div class="screen-title">pulse-monitor-cockpit://localhost:3000/pulse</div>
+            <div class="live-badge">
+              <span class="live-pulse-dot"></span>
+              <span>LIVE SSE</span>
             </div>
           </div>
 
-          <!-- Alert Popover -->
-          <div id="simAlertBanner" class="cockpit-alert">
-            <span style="font-size: 1.1rem;">🚨</span>
-            <div id="simAlertText">Alert message goes here.</div>
-          </div>
+          <div class="screen-body">
+            <div class="stats-grid-sim">
+              <div class="stat-box-sim">
+                <span>TOTAL REQUESTS</span>
+                <strong id="simStatTotal">1,420</strong>
+              </div>
+              <div class="stat-box-sim">
+                <span>AVG LATENCY</span>
+                <strong id="simStatLatency">12.4ms</strong>
+              </div>
+              <div class="stat-box-sim">
+                <span>CONTRACT DRIFT</span>
+                <strong id="simStatDrift" style="color: #F59E0B;">3 Events</strong>
+              </div>
+            </div>
 
-          <!-- Table View -->
-          <div class="sim-table-wrap">
-            <table class="sim-table">
-              <thead>
-                <tr>
-                  <th>Time</th>
-                  <th>Method</th>
-                  <th>Path</th>
-                  <th>Status</th>
-                  <th>Contract</th>
-                  <th>Latency</th>
-                </tr>
-              </thead>
-              <tbody id="simTableBody">
-                <tr>
-                  <td style="color: var(--text-dim);">12:04:12</td>
-                  <td><span class="badge badge-get">GET</span></td>
-                  <td style="color: var(--text-main); font-weight: 500;">/api/v1/users/42</td>
-                  <td><span class="badge-status-200">200</span></td>
-                  <td><span class="badge badge-verified">Verified ✓</span></td>
-                  <td style="color: var(--text-muted);">8.2ms</td>
-                </tr>
-                <tr>
-                  <td style="color: var(--text-dim);">12:04:10</td>
-                  <td><span class="badge badge-post">POST</span></td>
-                  <td style="color: var(--text-main); font-weight: 500;">/api/v1/auth/login</td>
-                  <td><span class="badge-status-200">201</span></td>
-                  <td><span class="badge badge-verified">Verified ✓</span></td>
-                  <td style="color: var(--text-muted);">18.4ms</td>
-                </tr>
-                <tr>
-                  <td style="color: var(--text-dim);">12:04:05</td>
-                  <td><span class="badge badge-get">GET</span></td>
-                  <td style="color: var(--text-main); font-weight: 500;">/api/v1/orders/101</td>
-                  <td><span class="badge-status-200">200</span></td>
-                  <td><span class="badge badge-drift">Drift ⚠️</span></td>
-                  <td style="color: var(--text-muted);">12.1ms</td>
-                </tr>
-                <tr>
-                  <td style="color: var(--text-dim);">12:03:59</td>
-                  <td><span class="badge badge-get">GET</span></td>
-                  <td style="color: var(--text-main); font-weight: 500;">/api/search?q=1' OR 1=1</td>
-                  <td><span class="badge-status-500">403</span></td>
-                  <td><span class="badge badge-drift">Blocked 🛡️</span></td>
-                  <td style="color: var(--text-muted);">3.4ms</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="live-stream-header">
+              Live HTTP & Security Stream (Last Ingested)
+            </div>
+
+            <div class="events-list-sim" id="simEventsList">
+              <!-- Initial events -->
+              <div class="event-row-sim">
+                <span style="color: #34D399; font-weight: 600;">GET /api/orders/ord_101</span>
+                <span style="color: #94A3B8;">200 OK • 8ms • <span style="color: #34D399;">Contract Verified ✓</span></span>
+              </div>
+              <div class="event-row-sim">
+                <span style="color: #FBBF24; font-weight: 600;">GET /api/orders/ord_broken</span>
+                <span style="color: #94A3B8;">200 OK • 14ms • <span style="color: #F59E0B;">Drift: missing 'status' ⚠️</span></span>
+              </div>
+              <div class="event-row-sim">
+                <span style="color: #F87171; font-weight: 600;">GET /api/users?id=1' OR 1=1</span>
+                <span style="color: #EF4444; font-weight: 600;">CRITICAL: SQL Injection Blocked 🚨</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Feature Grid Section -->
-  <section id="features" class="container" style="padding-bottom: 6rem;">
-    <div class="section-head">
-      <div class="section-tag">Core Capabilities</div>
-      <h2 class="section-title">Built for Modern API Engineers</h2>
-      <p class="section-subtitle">
-        Everything you need to observe, debug, and enforce API contracts during development and staging.
-      </p>
-    </div>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>1-Line Universal Adapter</h3>
-        <p>Drop a single middleware into Express, NestJS, or FastAPI. Automatically opens a dedicated dashboard on <code>/pulse</code> with zero setup.</p>
+  <!-- Quickstart Integration Section -->
+  <section id="quickstart" class="quickstart-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">1-Minute Setup</div>
+        <h2 class="section-title">One line of code. Zero headache.</h2>
+        <p class="section-subtitle">
+          Mount the Pulse middleware in your favourite backend framework and open <code>/pulse</code>.
+        </p>
       </div>
 
-      <div class="feature-card">
-        <div class="feature-icon">🛡️</div>
-        <h3>Intrusion Detection Watchdog</h3>
-        <p>Built-in heuristic scanner inspects SQL Injection, Cross-Site Scripting (XSS), and Path Traversal signatures in real time.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📖</div>
-        <h3>OpenAPI Schema Drift Detector</h3>
-        <p>Ingests <code>/openapi.json</code> and validates live requests against the contract. Flags missing fields and undocumented endpoints in red.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🔐</div>
-        <h3>Auto Credential Sanitization</h3>
-        <p>Zero risk of leaking secrets. Authorization headers, session cookies, JWTs, and passwords are automatically masked with <code>[REDACTED]</code>.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📡</div>
-        <h3>Live Server-Sent Events (SSE)</h3>
-        <p>Streams telemetry straight from memory to the browser. See requests, latency spikes, and threats with zero manual page refreshes.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">☁️</div>
-        <h3>100% Local-First Privacy</h3>
-        <p>Zero cloud accounts, zero third-party telemetry egress. Uses pre-allocated circular ring buffers to maintain zero-latency overhead.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Quickstart Code Section -->
-  <section id="quickstart" class="container" style="padding-bottom: 6rem;">
-    <div class="section-head">
-      <div class="section-tag">60-Second Integration</div>
-      <h2 class="section-title">Drop into Your Favorite Framework</h2>
-      <p class="section-subtitle">
-        Select your language and framework below to see how effortless setup is.
-      </p>
-    </div>
-
-    <div class="install-card" style="max-width: 800px;">
-      <div class="install-header">
+      <div class="tab-nav">
         <button class="tab-btn code-tab-btn active" data-target="snippet-express">Express.js (Node)</button>
         <button class="tab-btn code-tab-btn" data-target="snippet-fastapi">FastAPI (Python)</button>
         <button class="tab-btn code-tab-btn" data-target="snippet-go">Go (net/http & Gin)</button>
@@ -324,187 +255,230 @@
         <button class="tab-btn code-tab-btn" data-target="snippet-django">Django (Python)</button>
       </div>
 
-      <div style="padding: 1.5rem; background: #090e1a; font-family: var(--font-mono); font-size: 0.85rem; overflow-x: auto; line-height: 1.7;">
-        <!-- Express -->
-        <div id="snippet-express" class="code-snippet">
-<pre style="color: #cbd5e1;"><span style="color: #f472b6;">import</span> express <span style="color: #f472b6;">from</span> <span style="color: #a5b4fc;">'express'</span>;
-<span style="color: #f472b6;">import</span> { Monitor, expressPulseMiddleware } <span style="color: #f472b6;">from</span> <span style="color: #a5b4fc;">'pulse-monitor'</span>;
-
-<span style="color: #f472b6;">const</span> app = express();
-<span style="color: #f472b6;">const</span> monitor = <span style="color: #f472b6;">new</span> Monitor({ openApiSpecUrl: <span style="color: #a5b4fc;">'/openapi.json'</span> });
-
-<span style="color: #64748b;">// 1-Line Pulse Integration</span>
-app.use(expressPulseMiddleware(monitor));
-
-app.listen(<span style="color: #38bdf8;">3000</span>, () => {
-  console.log(<span style="color: #a5b4fc;">'Dashboard: http://localhost:3000/pulse'</span>);
-});</pre>
+      <div class="code-container">
+        <div class="code-header">
+          <div class="window-dots">
+            <div class="window-dot red"></div>
+            <div class="window-dot yellow"></div>
+            <div class="window-dot green"></div>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.8rem; color: #94A3B8;">server.js / main.py / main.go</span>
+          <button id="copyCodeBtn" class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.75rem; background: #1E293B; color: #F8FAFC; border-color: #334155;">Copy</button>
         </div>
 
-        <!-- FastAPI -->
-        <div id="snippet-fastapi" class="code-snippet" style="display: none;">
-<pre style="color: #cbd5e1;"><span style="color: #f472b6;">from</span> fastapi <span style="color: #f472b6;">import</span> FastAPI
-<span style="color: #f472b6;">from</span> pulse_monitor <span style="color: #f472b6;">import</span> PulseMiddleware
+        <div class="code-content">
+          <!-- Express -->
+          <div id="snippet-express" class="code-snippet">
+<pre><span style="color: #F472B6;">import</span> express <span style="color: #F472B6;">from</span> <span style="color: #A5B4FC;">'express'</span>;
+<span style="color: #F472B6;">import</span> { Monitor, expressPulseMiddleware } <span style="color: #F472B6;">from</span> <span style="color: #A5B4FC;">'@alaminislam34/server-monitor'</span>;
+
+<span style="color: #F472B6;">const</span> app = express();
+<span style="color: #F472B6;">const</span> monitor = <span style="color: #F472B6;">new</span> Monitor({ openApiSpecUrl: <span style="color: #A5B4FC;">'/openapi.json'</span> });
+
+<span style="color: #64748B;">// 1-Line Pulse Integration (Serves /pulse and monitors all traffic)</span>
+app.use(expressPulseMiddleware(monitor));
+
+app.listen(<span style="color: #38BDF8;">3000</span>, () => console.log(<span style="color: #A5B4FC;">'Pulse Cockpit: http://localhost:3000/pulse'</span>));</pre>
+          </div>
+
+          <!-- FastAPI -->
+          <div id="snippet-fastapi" class="code-snippet" style="display: none;">
+<pre><span style="color: #F472B6;">from</span> fastapi <span style="color: #F472B6;">import</span> FastAPI
+<span style="color: #F472B6;">from</span> pulse_monitor <span style="color: #F472B6;">import</span> PulseMiddleware
 
 app = FastAPI()
 
-<span style="color: #64748b;"># 1-Line Pulse Integration (Just like Swagger UI!)</span>
-app.add_middleware(PulseMiddleware, endpoint=<span style="color: #a5b4fc;">"/pulse"</span>, open_api_spec_url=<span style="color: #a5b4fc;">"/openapi.json"</span>)
+<span style="color: #64748B;"># 1-Line Pulse ASGI Integration (Just like Swagger UI)</span>
+app.add_middleware(PulseMiddleware, endpoint=<span style="color: #A5B4FC;">"/pulse"</span>, open_api_spec_url=<span style="color: #A5B4FC;">"/openapi.json"</span>)
 
-<span style="color: #f472b6;">@app.get</span>(<span style="color: #a5b4fc;">"/api/v1/users"</span>)
-<span style="color: #f472b6;">def</span> <span style="color: #38bdf8;">get_users</span>():
-    <span style="color: #f472b6;">return</span> [{<span style="color: #a5b4fc;">"id"</span>: <span style="color: #38bdf8;">1</span>, <span style="color: #a5b4fc;">"name"</span>: <span style="color: #a5b4fc;">"Alice"</span>}]</pre>
-        </div>
+<span style="color: #F472B6;">@app.get</span>(<span style="color: #A5B4FC;">"/api/v1/users"</span>)
+<span style="color: #F472B6;">def</span> <span style="color: #38BDF8;">get_users</span>():
+    <span style="color: #F472B6;">return</span> [{<span style="color: #A5B4FC;">"id"</span>: <span style="color: #38BDF8;">1</span>, <span style="color: #A5B4FC;">"name"</span>: <span style="color: #A5B4FC;">"Alice"</span>}]</pre>
+          </div>
 
-        <!-- Go -->
-        <div id="snippet-go" class="code-snippet" style="display: none;">
-<pre style="color: #cbd5e1;"><span style="color: #f472b6;">package</span> main
+          <!-- Go -->
+          <div id="snippet-go" class="code-snippet" style="display: none;">
+<pre><span style="color: #F472B6;">package</span> main
 
-<span style="color: #f472b6;">import</span> (
-    <span style="color: #a5b4fc;">"net/http"</span>
-    <span style="color: #a5b4fc;">"github.com/alaminislam34/pulse-monitor/sdk/go/pulse"</span>
+<span style="color: #F472B6;">import</span> (
+    <span style="color: #A5B4FC;">"net/http"</span>
+    <span style="color: #A5B4FC;">"github.com/alaminislam34/pulse-monitor/sdk/go/pulse"</span>
 )
 
-<span style="color: #f472b6;">func</span> <span style="color: #38bdf8;">main</span>() {
-    m := pulse.NewMonitor(pulse.Config{BasePath: <span style="color: #a5b4fc;">"/pulse"</span>})
+<span style="color: #F472B6;">func</span> <span style="color: #38BDF8;">main</span>() {
+    m := pulse.NewMonitor(pulse.Config{BasePath: <span style="color: #A5B4FC;">"/pulse"</span>})
     mux := http.NewServeMux()
 
-    <span style="color: #64748b;">// 1-Line Pulse Middleware (Serves /pulse and monitors all routes)</span>
-    http.ListenAndServe(<span style="color: #a5b4fc;">":8080"</span>, pulse.HTTPMiddleware(m)(mux))
+    <span style="color: #64748B;">// 1-Line Pulse Middleware (Serves /pulse and monitors all routes)</span>
+    http.ListenAndServe(<span style="color: #A5B4FC;">":8080"</span>, pulse.HTTPMiddleware(m)(mux))
 }</pre>
-        </div>
+          </div>
 
-        <!-- NestJS -->
-        <div id="snippet-nestjs" class="code-snippet" style="display: none;">
-<pre style="color: #cbd5e1;"><span style="color: #f472b6;">import</span> { NestFactory } <span style="color: #f472b6;">from</span> <span style="color: #a5b4fc;">'@nestjs/core'</span>;
-<span style="color: #f472b6;">import</span> { Monitor, expressPulseMiddleware } <span style="color: #f472b6;">from</span> <span style="color: #a5b4fc;">'pulse-monitor'</span>;
+          <!-- NestJS -->
+          <div id="snippet-nestjs" class="code-snippet" style="display: none;">
+<pre><span style="color: #F472B6;">import</span> { NestFactory } <span style="color: #F472B6;">from</span> <span style="color: #A5B4FC;">'@nestjs/core'</span>;
+<span style="color: #F472B6;">import</span> { Monitor, expressPulseMiddleware } <span style="color: #F472B6;">from</span> <span style="color: #A5B4FC;">'@alaminislam34/server-monitor'</span>;
 
-<span style="color: #f472b6;">async function</span> <span style="color: #38bdf8;">bootstrap</span>() {
-  <span style="color: #f472b6;">const</span> app = <span style="color: #f472b6;">await</span> NestFactory.create(AppModule);
-  <span style="color: #f472b6;">const</span> monitor = <span style="color: #f472b6;">new</span> Monitor();
+<span style="color: #F472B6;">async function</span> <span style="color: #38BDF8;">bootstrap</span>() {
+  <span style="color: #F472B6;">const</span> app = <span style="color: #F472B6;">await</span> NestFactory.create(AppModule);
+  <span style="color: #F472B6;">const</span> monitor = <span style="color: #F472B6;">new</span> Monitor({ openApiSpecUrl: <span style="color: #A5B4FC;">'/api-json'</span> });
 
   app.use(expressPulseMiddleware(monitor));
-  <span style="color: #f472b6;">await</span> app.listen(<span style="color: #38bdf8;">3000</span>);
+  <span style="color: #F472B6;">await</span> app.listen(<span style="color: #38BDF8;">3000</span>);
 }
 bootstrap();</pre>
-        </div>
+          </div>
 
-        <!-- Django -->
-        <div id="snippet-django" class="code-snippet" style="display: none;">
-<pre style="color: #cbd5e1;"><span style="color: #64748b;"># settings.py</span>
+          <!-- Django -->
+          <div id="snippet-django" class="code-snippet" style="display: none;">
+<pre><span style="color: #64748B;"># settings.py</span>
 MIDDLEWARE = [
-    <span style="color: #a5b4fc;">'pulse_monitor.django.PulseMiddleware'</span>,
-    <span style="color: #64748b;"># ... other middlewares</span>
+    <span style="color: #A5B4FC;">'pulse_monitor.django.PulseMiddleware'</span>,
+    <span style="color: #64748B;"># ... your standard middlewares</span>
 ]
 
 PULSE_CONFIG = {
-    <span style="color: #a5b4fc;">'ENDPOINT'</span>: <span style="color: #a5b4fc;">'/pulse'</span>,
-    <span style="color: #a5b4fc;">'OPENAPI_SPEC_URL'</span>: <span style="color: #a5b4fc;">'/api/schema/'</span>
+    <span style="color: #A5B4FC;">'ENDPOINT'</span>: <span style="color: #A5B4FC;">'/pulse'</span>,
+    <span style="color: #A5B4FC;">'OPENAPI_SPEC_URL'</span>: <span style="color: #A5B4FC;">'/api/schema/'</span>
 }</pre>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Comparison Table Section -->
-  <section id="comparison" class="container comparison-section">
-    <div class="section-head">
-      <div class="section-tag">Competitive Benchmark</div>
-      <h2 class="section-title">How Pulse Compares</h2>
-      <p class="section-subtitle">
-        Why engineering teams choose Pulse Monitor over static docs or heavy cloud APMs.
-      </p>
-    </div>
+  <!-- Competitor Comparison Section -->
+  <section id="comparison" class="comparison-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Architectural Comparison</div>
+        <h2 class="section-title">How Pulse compares.</h2>
+        <p class="section-subtitle">
+          Engineered to give you the speed of Swagger with the real-time observability of an APM, with zero cloud lock-in.
+        </p>
+      </div>
 
-    <div class="comparison-table-wrap">
-      <table class="comp-table">
-        <thead>
-          <tr>
-            <th>Feature / Dimension</th>
-            <th class="pulse-col">⚡ Pulse Monitor</th>
-            <th>Swagger UI</th>
-            <th>Scalar</th>
-            <th>Laravel Telescope</th>
-            <th>Datadog / Sentry</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Universal Multi-Language</strong></td>
-            <td class="pulse-col" style="color: var(--accent-success);">✓ Yes (Node, Python, etc.)</td>
-            <td>✓ Yes</td>
-            <td>✓ Yes</td>
-            <td style="color: var(--accent-danger);">✗ PHP Only</td>
-            <td>✓ Yes</td>
-          </tr>
-          <tr>
-            <td><strong>OpenAPI Schema Drift Watchdog</strong></td>
-            <td class="pulse-col" style="color: var(--accent-success);">✓ Real-time Live Diff</td>
-            <td style="color: var(--accent-danger);">✗ None</td>
-            <td style="color: var(--accent-danger);">✗ None</td>
-            <td style="color: var(--accent-danger);">✗ None</td>
-            <td style="color: var(--accent-danger);">✗ None</td>
-          </tr>
-          <tr>
-            <td><strong>Live Traffic Telemetry & Latency</strong></td>
-            <td class="pulse-col" style="color: var(--accent-success);">✓ Real-time SSE</td>
-            <td style="color: var(--accent-danger);">✗ None</td>
-            <td style="color: var(--accent-danger);">✗ None</td>
-            <td>✓ Historical poll</td>
-            <td>✓ Cloud Traces</td>
-          </tr>
-          <tr>
-            <td><strong>Built-in Security Threat Detector</strong></td>
-            <td class="pulse-col" style="color: var(--accent-success);">✓ SQLi, XSS, Traversal</td>
-            <td style="color: var(--accent-danger);">✗ None</td>
-            <td style="color: var(--accent-danger);">✗ None</td>
-            <td style="color: var(--accent-danger);">✗ None</td>
-            <td>$$ Extra Add-on</td>
-          </tr>
-          <tr>
-            <td><strong>Time to Value</strong></td>
-            <td class="pulse-col" style="color: var(--accent-success);">&lt; 60 seconds</td>
-            <td>3–5 mins</td>
-            <td>1–2 mins</td>
-            <td>1 min (PHP only)</td>
-            <td>15–30 mins</td>
-          </tr>
-          <tr>
-            <td><strong>Cloud Dependency & Privacy</strong></td>
-            <td class="pulse-col" style="color: var(--accent-success);">100% Local / Zero Cloud</td>
-            <td>Local</td>
-            <td>Local</td>
-            <td>Local</td>
-            <td style="color: var(--accent-danger);">Mandatory Cloud Egress</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th style="background: rgba(0, 170, 69, 0.08); color: var(--emerald-dark);">Pulse Monitor</th>
+              <th>Swagger UI</th>
+              <th>Scalar</th>
+              <th>Laravel Telescope</th>
+              <th>Sentry</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Multi-Language</strong></td>
+              <td class="pulse-col">Node, Python, Go</td>
+              <td>Universal (via JSON)</td>
+              <td>Universal (via JSON)</td>
+              <td>PHP Only</td>
+              <td>Universal</td>
+            </tr>
+            <tr>
+              <td><strong>OpenAPI Drift Detection</strong></td>
+              <td class="pulse-col">Real-time Live Diff</td>
+              <td>None</td>
+              <td>None</td>
+              <td>None</td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td><strong>Live SSE Traffic Stream</strong></td>
+              <td class="pulse-col">Sub-millisecond</td>
+              <td>None</td>
+              <td>None</td>
+              <td>Polling</td>
+              <td>Batched Egress</td>
+            </tr>
+            <tr>
+              <td><strong>Integrated Test Runner</strong></td>
+              <td class="pulse-col">1-Click Replay</td>
+              <td>Basic "Try it out"</td>
+              <td>Modern "Try it out"</td>
+              <td>None</td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td><strong>Built-in Threat Detection</strong></td>
+              <td class="pulse-col">SQLi, XSS, Traversal</td>
+              <td>None</td>
+              <td>None</td>
+              <td>None</td>
+              <td>Paid Add-on</td>
+            </tr>
+            <tr>
+              <td><strong>Data Privacy & Residency</strong></td>
+              <td class="pulse-col">100% Local / Zero Cloud</td>
+              <td>100% Local</td>
+              <td>Local</td>
+              <td>Local Database</td>
+              <td>Mandatory Cloud Egress</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
-  <!-- Wire Protocol Specification Section -->
-  <section id="spec" class="container" style="padding-bottom: 6rem;">
-    <div class="feature-card" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.5)); border-color: var(--border-glow); padding: 3rem; text-align: center;">
-      <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem;">Open Wire Protocol Specification</h2>
-      <p style="color: var(--text-muted); max-width: 650px; margin: 0 auto 2rem auto; font-size: 0.95rem;">
-        Pulse Monitor is grounded in an open, language-agnostic contract (<code>SPEC.md</code>). Anyone can build an adapter for Go, Rust, Java, or C# in under 200 lines of code.
-      </p>
-      <div style="display: flex; justify-content: center; gap: 1rem;">
-        <a href="https://github.com/alaminislam34/pulse-monitor/blob/main/SPEC.md" target="_blank" rel="noopener" class="btn btn-primary">
-          Read SPEC.md (v0.1.0-draft)
-        </a>
-        <a href="https://github.com/alaminislam34/pulse-monitor" target="_blank" rel="noopener" class="btn btn-secondary">
-          Star on GitHub ⭐
-        </a>
+  <!-- FAQ Section (Peerlist Inspired) -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-tag">Frequently Asked Questions</div>
+        <h2 class="section-title">Everything you need to know.</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <h4>How is Pulse Monitor different from Swagger UI?</h4>
+          <p>
+            Swagger UI is a static documentation reader: it tells you what your API is <em>supposed</em> to do, but has no idea what real traffic is actually hitting your server. Pulse Monitor reads your OpenAPI specification, but it also captures live traffic in real time and highlights contract drift (e.g. missing required fields or undocumented 500 errors) as they happen.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>Does Pulse Monitor send my API data to any external cloud?</h4>
+          <p>
+            No. Pulse Monitor operates with strict zero-cloud egress. All telemetry, request ring buffers, and contract comparisons happen locally in your process memory and are served directly from your application's <code>/pulse</code> route. Sensitive headers and request/response secrets are scrubbed automatically.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>How much runtime overhead does Pulse Monitor introduce?</h4>
+          <p>
+            Sub-millisecond (&lt; 0.4ms). Pulse uses a bounded circular ring buffer with mutex-guarded memory pooling. It never writes to disk and never grows memory unbounded. When the buffer reaches capacity, the oldest records are dropped in FIFO order.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>Can I use Pulse Monitor across multiple backend languages?</h4>
+          <p>
+            Yes! Pulse Monitor is built on an open wire protocol specification (<a href="https://github.com/alaminislam34/pulse-monitor/blob/main/SPEC.md" target="_blank" rel="noopener" style="color: var(--emerald-primary); text-decoration: none; font-weight: 600;">SPEC.md</a>). We currently provide production SDKs for Node.js (Express & NestJS), Python (FastAPI & Starlette), and Go (net/http & Gin).
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <div class="container">
-      <p>Pulse Monitor is open-source software licensed under the <a href="https://opensource.org/licenses/MIT" style="color: var(--accent-primary); text-decoration: none;">MIT License</a>.</p>
-      <p style="margin-top: 0.5rem; font-size: 0.75rem;">Crafted with speed, privacy, and precision for backend developers worldwide.</p>
+    <div class="container footer-inner">
+      <h2 style="font-family: var(--font-serif); font-size: 2.25rem; font-weight: 400; color: var(--text-primary); max-width: 600px;">
+        Join builders building rock-solid APIs.
+      </h2>
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="#quickstart" class="btn btn-primary">Start Using Pulse</a>
+        <a href="https://github.com/alaminislam34/pulse-monitor" target="_blank" rel="noopener" class="btn btn-secondary">Star on GitHub ⭐</a>
+      </div>
+      <p class="footer-copy">
+        Pulse Monitor is open-source software licensed under the MIT License.<br>
+        Crafted with precision for backend developers worldwide.
+      </p>
     </div>
   </footer>
 
