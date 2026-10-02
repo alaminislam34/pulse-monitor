@@ -19,7 +19,7 @@ Zero-dependency, high-performance API telemetry, security monitoring, and dashbo
 ### 1. Installation
 
 ```bash
-go get github.com/alaminislam34/server-monitor/sdk/go
+go get github.com/alaminislam34/pulse-monitor/sdk/go
 ```
 
 ### 2. Standard `net/http` Integration
@@ -31,7 +31,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/alaminislam34/server-monitor/sdk/go/pulse"
+	"github.com/alaminislam34/pulse-monitor/sdk/go/pulse"
 )
 
 func main() {
@@ -64,7 +64,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/alaminislam34/server-monitor/sdk/go/pulse"
+	"github.com/alaminislam34/pulse-monitor/sdk/go/pulse"
 )
 
 func main() {

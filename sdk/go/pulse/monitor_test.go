@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/alaminislam34/server-monitor/sdk/go/pulse"
+	"github.com/alaminislam34/pulse-monitor/sdk/go/pulse"
 )
 
 func TestCircularBuffer(t *testing.T) {
