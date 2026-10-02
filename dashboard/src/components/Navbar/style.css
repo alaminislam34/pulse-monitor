@@ -12,8 +12,8 @@
     padding: 0 1.5rem;
     gap: 1rem;
     background-color: var(--bg-navbar);
-    border-bottom: 1px solid var(--border-color);
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    border-bottom: none; /* Borderless seamless transition */
+    transition: background-color 0.2s ease;
 }
 
 /* ── Brand ── */
@@ -47,7 +47,7 @@
 
 .navbar-search:focus-within {
     border-color: var(--accent-primary);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 170, 69, 0.12);
 }
 
 .search-input {

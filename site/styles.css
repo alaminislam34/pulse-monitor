@@ -594,10 +594,10 @@ header {
 
 /* ── Actual Dashboard Window ── */
 .actual-dashboard-window {
-  background: #F8FAFC;
+  background: #FBFBFA;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
-  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -656,8 +656,8 @@ header {
   justify-content: space-between;
   height: 52px;
   padding: 0 1.25rem;
-  background: #F8FAFC;
-  border-bottom: 1px solid #E2E8F0;
+  background: #FBFBFA;
+  border-bottom: none;
   gap: 1rem;
 }
 
@@ -793,8 +793,8 @@ header {
 
 .cockpit-sidebar {
   width: 210px;
-  background: #F8FAFC;
-  border-right: 1px solid #E2E8F0;
+  background: #FBFBFA;
+  border-right: none;
   padding: 1rem 0.65rem;
   display: flex;
   flex-direction: column;
@@ -895,7 +895,7 @@ header {
 .cockpit-content {
   flex: 1;
   padding: 1.25rem;
-  background: #F8FAFC;
+  background: #FBFBFA;
   overflow-x: auto;
   min-width: 0;
 }

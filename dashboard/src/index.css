@@ -1,66 +1,67 @@
 /* ═════════════════════════════════════════════════════════════════════
-   PULSE MONITOR COCKPIT - STRIPE-INSPIRED UNIFIED DESIGN SYSTEM
+   PULSE MONITOR COCKPIT - WARM EDITORIAL PEERLIST & STRIPE UNIFIED SYSTEM
    ═════════════════════════════════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  /* Stripe-Style Unified Surface (Light) */
-  --bg-main: #F8FAFC;
+  /* Peerlist-Inspired Warm Editorial Palette (Light) */
+  --bg-main: #FBFBFA;
   --bg-card: #FFFFFF;
-  --bg-sidebar: #F8FAFC;  /* Same seamless surface */
-  --bg-navbar: #F8FAFC;   /* Same seamless surface */
-  --bg-hover: #F1F5F9;
+  --bg-sidebar: #FBFBFA;  /* Exact same seamless canvas */
+  --bg-navbar: #FBFBFA;   /* Exact same seamless canvas */
+  --bg-hover: #F4F5F6;
   --bg-input: #FFFFFF;
-  --bg-table-header: #F8FAFC;
+  --bg-table-header: #F4F5F6;
   
-  --border-color: #E2E8F0;
-  --border-subtle: #F1F5F9;
-  --border-focus: #6366F1;
+  --border-color: #EBECEF;
+  --border-subtle: #F3F4F6;
+  --border-focus: #00AA45;
   
-  --accent-primary: #6366F1; /* Indigo */
-  --accent-success: #10B981; /* Emerald */
-  --accent-warning: #F59E0B; /* Amber */
-  --accent-danger: #EF4444;  /* Red */
+  --accent-primary: #00AA45; /* Signature Emerald Green */
+  --accent-success: #00AA45; /* Emerald */
+  --accent-warning: #D97706; /* Warm Amber */
+  --accent-danger: #DC2626;  /* Red */
   
-  --text-main: #0F172A;      /* Slate 900 */
-  --text-secondary: #334155; /* Slate 700 */
-  --text-muted: #64748B;     /* Slate 500 */
-  --text-light: #94A3B8;     /* Slate 400 */
+  --text-main: #111827;      /* Rich Gray 900 */
+  --text-secondary: #4B5563; /* Gray 700 */
+  --text-muted: #6B7280;     /* Gray 500 */
+  --text-light: #9CA3AF;     /* Gray 400 */
   
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
   --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.02);
   
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
 }
 
 :root.dark {
-  /* Stripe-Style Unified Surface (Dark) */
-  --bg-main: #0B0F19;
-  --bg-card: #111827;
-  --bg-sidebar: #0B0F19;
-  --bg-navbar: #0B0F19;
-  --bg-hover: #1E293B;
-  --bg-input: #111827;
-  --bg-table-header: #111827;
+  /* Warm Editorial Deep Palette (Dark) */
+  --bg-main: #0B0E14;
+  --bg-card: #111622;
+  --bg-sidebar: #0B0E14;
+  --bg-navbar: #0B0E14;
+  --bg-hover: #182030;
+  --bg-input: #111622;
+  --bg-table-header: #111622;
   
-  --border-color: #1F2937;
-  --border-subtle: #1E293B;
-  --border-focus: #818CF8;
+  --border-color: #1E2638;
+  --border-subtle: #182030;
+  --border-focus: #00AA45;
   
-  --accent-primary: #818CF8;
-  --accent-success: #34D399;
-  --accent-warning: #FBBF24;
-  --accent-danger: #F87171;
+  --accent-primary: #00AA45;
+  --accent-success: #10B981;
+  --accent-warning: #F59E0B;
+  --accent-danger: #EF4444;
   
-  --text-main: #F8FAFC;
-  --text-secondary: #CBD5E1;
-  --text-muted: #94A3B8;
-  --text-light: #64748B;
+  --text-main: #F9FAFB;
+  --text-secondary: #D1D5DB;
+  --text-muted: #9CA3AF;
+  --text-light: #6B7280;
   
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
@@ -97,11 +98,11 @@ body {
   position: relative;
 }
 
-/* Sticky Sidebar */
+/* Sticky Sidebar - NO RIGHT BORDER for seamless aesthetic */
 .sidebar {
   width: 240px;
   background-color: var(--bg-sidebar);
-  border-right: 1px solid var(--border-color);
+  border-right: none; /* Completely borderless */
   padding: 1.25rem 0.85rem;
   flex-shrink: 0;
   position: sticky;

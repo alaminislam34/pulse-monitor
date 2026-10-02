@@ -73,7 +73,7 @@ export function Sidebar({ activeTab, setActiveTab, threatCount = 0, driftCount =
         </button>
       </div>
 
-      <div style={{ padding: '0.75rem', borderTop: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+      <div style={{ padding: '0.75rem', borderTop: 'none', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
         <div style={{ fontSize: '0.75rem', color: 'var(--text-light)', display: 'flex', justifyContent: 'space-between' }}>
           <span>Protocol</span>
           <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>v0.1.0</span>
