@@ -36,3 +36,19 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Run Python SDK Unit Tests
         run: python tests/test_python_sdk.py
+
+  test-go:
+    name: Go SDK Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: ['1.20', '1.21', '1.22', '1.23']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Run Go Unit Tests
+        run: |
+          cd sdk/go
+          go test -v ./pulse/...
