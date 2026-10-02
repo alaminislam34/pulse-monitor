@@ -13,7 +13,7 @@ import { SettingsTab } from './components/SettingsTab';
 import PulseNavbar from './components/Navbar/Navbar';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'requests' | 'security' | 'health' | 'settings' | 'routes' | 'playground'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'requests' | 'security' | 'health' | 'settings' | 'routes' | 'playground'>('playground');
   const [authSecret, setAuthSecret] = useState<string>(() => localStorage.getItem('pulse_auth') || '');
   const [passwordInput, setPasswordInput] = useState<string>('');
   const [isAuthorized, setIsAuthorized] = useState<boolean>(true);
@@ -311,20 +311,6 @@ export default function App() {
     setSandboxResult({ detected, attackType, severity, details });
   };
 
-  const formatUptime = (seconds: number) => {
-    const days = Math.floor(seconds / (3600 * 24));
-    const hours = Math.floor((seconds % (3600 * 24)) / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-
-    const parts = [];
-    if (days > 0) parts.push(`${days}d`);
-    if (hours > 0) parts.push(`${hours}h`);
-    if (minutes > 0) parts.push(`${minutes}m`);
-    parts.push(`${secs}s`);
-    return parts.join(' ');
-  };
-
   if (!isAuthorized) {
     return (
       <div className="full-screen-center">
@@ -485,7 +471,12 @@ export default function App() {
 
       {/* Main Layout Workspace */}
       <div className="layout-main">
-        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Sidebar 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab} 
+          threatCount={threats.length}
+          driftCount={requests.filter(r => r.drift?.hasSchemaMismatch).length}
+        />
 
         {/* Scrollable Center Content Area */}
         <div className="content-area">
@@ -564,16 +555,6 @@ export default function App() {
               handleLogout={handleLogout}
             />
           )}
-        </div>
-      </div>
-
-      <div style={{ paddingLeft: '1.5rem', paddingBottom: '1.5rem', background: 'var(--bg-main)' }} className="mobile-hidden">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ width: '8px', height: '8px', background: 'var(--accent-success)', borderRadius: '50%' }}></div>
-            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main)' }}>{system.platform} server</span>
-          </div>
-          <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Uptime: {formatUptime(system.uptime)}</p>
         </div>
       </div>
 

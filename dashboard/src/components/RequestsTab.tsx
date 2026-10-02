@@ -38,7 +38,7 @@ export function RequestsTab({
   }).reverse();
 
   return (
-    <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: selectedRequest ? '2fr 1fr' : '1fr', gap: '1.5rem' }}>
+    <div className={`animate-fade-in ${selectedRequest ? 'requests-grid' : ''}`} style={selectedRequest ? undefined : { display: 'block' }}>
       <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <h4 style={{ fontSize: '0.95rem', fontWeight: 600 }}>API Requests Log</h4>

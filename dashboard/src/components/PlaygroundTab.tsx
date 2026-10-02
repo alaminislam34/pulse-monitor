@@ -59,7 +59,7 @@ export function PlaygroundTab({
   };
 
   return (
-    <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem' }}>
+    <div className="animate-fade-in playground-grid">
       
       {/* Request Workspace */}
       <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
