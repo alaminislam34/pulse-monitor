@@ -134,102 +134,387 @@
         </p>
       </div>
 
-      <div class="cockpit-simulator">
-        <!-- Controls Left -->
-        <div class="simulator-controls">
-          <div>
-            <div class="controller-title">
-              <span>Traffic Generator</span>
-            </div>
-            <p class="controller-desc" style="margin-top: 0.35rem;">
-              Trigger live API scenarios to see how Pulse validates contracts and flags security risks.
-            </p>
-          </div>
-
-          <div class="sim-buttons-group">
-            <button class="sim-btn" id="simValidBtn">
-              <span>Valid 200 OK</span>
-              <span class="sim-badge success">Verified ✓</span>
+      <!-- Live Cockpit Studio / Actual Dashboard Showcase -->
+      <div class="cockpit-wrapper">
+        <!-- Interactive Scenario Toolbar -->
+        <div class="sim-toolbar">
+          <div class="sim-toolbar-left">
+            <span class="sim-toolbar-label">Simulate Ingestion:</span>
+            <button class="sim-pill-btn success" id="simValidBtn">
+              <span>▶ 200 OK</span>
             </button>
-
-            <button class="sim-btn" id="simDriftBtn">
-              <span>Schema Drift (Missing Fields)</span>
-              <span class="sim-badge warning">Drift ⚠️</span>
+            <button class="sim-pill-btn warning" id="simDriftBtn">
+              <span>⚠️ Schema Drift</span>
             </button>
-
-            <button class="sim-btn" id="simThreatBtn">
-              <span>SQL Injection Attack</span>
-              <span class="sim-badge danger">Threat 🚨</span>
+            <button class="sim-pill-btn danger" id="simThreatBtn">
+              <span>🚨 SQL Injection</span>
             </button>
-
-            <button class="sim-btn" id="simLatencyBtn">
-              <span>Latency Spike (450ms)</span>
-              <span class="sim-badge" style="background:#F3F4F6; color:#4B5563;">Slow ⏱</span>
+            <button class="sim-pill-btn purple" id="simLatencyBtn">
+              <span>⏱ Latency Spike</span>
             </button>
           </div>
-
-          <div style="padding-top: 1rem; border-top: 1px solid var(--border-light);">
-            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">
-              Protocol Stats
-            </div>
-            <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-              Wire Version: <code style="color: var(--emerald-primary); font-weight: 600;">v0.1.0</code><br>
-              Runtime Overhead: <code style="color: var(--emerald-primary); font-weight: 600;">&lt; 0.4ms</code><br>
-              Egress: <code style="color: var(--emerald-primary); font-weight: 600;">0 bytes (Local-First)</code>
-            </div>
+          <div class="sim-toolbar-right">
+            <span class="sim-status-pill">
+              <span class="live-pulse-dot"></span>
+              <span>SSE Connected</span>
+            </span>
+            <span class="sim-stat-pill">Wire: v0.1.0</span>
+            <span class="sim-stat-pill">&lt; 0.4ms overhead</span>
+            <span class="sim-stat-pill">100% Local</span>
           </div>
         </div>
 
-        <!-- Terminal Screen Right -->
-        <div class="simulator-screen">
-          <div class="screen-header">
+        <!-- The Actual Dashboard Cockpit Window -->
+        <div class="actual-dashboard-window" id="cockpitWindow">
+          <!-- Window Titlebar -->
+          <div class="window-titlebar">
             <div class="window-dots">
-              <div class="window-dot red"></div>
-              <div class="window-dot yellow"></div>
-              <div class="window-dot green"></div>
+              <span class="window-dot red"></span>
+              <span class="window-dot yellow"></span>
+              <span class="window-dot green"></span>
             </div>
-            <div class="screen-title">pulse-monitor-cockpit://localhost:3000/pulse</div>
-            <div class="live-badge">
-              <span class="live-pulse-dot"></span>
-              <span>LIVE SSE</span>
+            <div class="window-url-bar">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>http://localhost:3000/pulse</span>
+            </div>
+            <div class="window-actions">
+              <span class="cockpit-badge-live">● LIVE SSE</span>
             </div>
           </div>
 
-          <div class="screen-body">
-            <div class="stats-grid-sim">
-              <div class="stat-box-sim">
-                <span>TOTAL REQUESTS</span>
-                <strong id="simStatTotal">1,420</strong>
-              </div>
-              <div class="stat-box-sim">
-                <span>AVG LATENCY</span>
-                <strong id="simStatLatency">12.4ms</strong>
-              </div>
-              <div class="stat-box-sim">
-                <span>CONTRACT DRIFT</span>
-                <strong id="simStatDrift" style="color: #F59E0B;">3 Events</strong>
-              </div>
+          <!-- Top Sticky Navbar (Stripe Unified Pattern) -->
+          <div class="cockpit-navbar">
+            <div class="cockpit-brand">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366F1" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+              <span class="cockpit-brand-name">Pulse Monitor</span>
+              <span class="cockpit-sse-tag">LIVE SSE</span>
+            </div>
+            
+            <div class="cockpit-search">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" placeholder="Search path, status or IP... (⌘ + F)" class="cockpit-search-input" readonly value="">
             </div>
 
-            <div class="live-stream-header">
-              Live HTTP & Security Stream (Last Ingested)
+            <div class="cockpit-nav-actions">
+              <button class="cockpit-btn" id="cockpitThemeToggle" title="Toggle Cockpit Light/Dark Theme">
+                <span id="themeToggleIcon">🌙</span>
+              </button>
+              <button class="cockpit-btn" id="cockpitSyncBtn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                <span>Sync</span>
+              </button>
+              <div class="cockpit-poll-select">
+                <span>5s</span>
+              </div>
+              <div class="cockpit-user-pill">
+                <span class="cockpit-avatar">AD</span>
+                <div class="cockpit-user-text">
+                  <span class="user-title">Admin</span>
+                  <span class="user-sub">PID 48818</span>
+                </div>
+              </div>
             </div>
+          </div>
 
-            <div class="events-list-sim" id="simEventsList">
-              <!-- Initial events -->
-              <div class="event-row-sim">
-                <span style="color: #34D399; font-weight: 600;">GET /api/orders/ord_101</span>
-                <span style="color: #94A3B8;">200 OK • 8ms • <span style="color: #34D399;">Contract Verified ✓</span></span>
+          <!-- Main Layout: Sticky Sidebar + Center Content -->
+          <div class="cockpit-layout">
+            <!-- Sidebar -->
+            <aside class="cockpit-sidebar">
+              <div class="cockpit-menu-group">
+                <div class="cockpit-menu-header">API Cockpit</div>
+                <button class="cockpit-nav-item active" data-tab="analytics">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                  <span>Analytics</span>
+                </button>
+                <button class="cockpit-nav-item" data-tab="traffic">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                  <span>Live Traffic</span>
+                  <span class="cockpit-count-badge warning" id="driftBadgeCount">1</span>
+                </button>
+                <button class="cockpit-nav-item" data-tab="contracts">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                  <span>Contracts & Routes</span>
+                </button>
+                <button class="cockpit-nav-item" data-tab="security">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                  <span>Threat Watchdog</span>
+                  <span class="cockpit-count-badge danger" id="threatBadgeCount">1</span>
+                </button>
+                <button class="cockpit-nav-item" data-tab="runner">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <span>API Runner</span>
+                </button>
               </div>
-              <div class="event-row-sim">
-                <span style="color: #FBBF24; font-weight: 600;">GET /api/orders/ord_broken</span>
-                <span style="color: #94A3B8;">200 OK • 14ms • <span style="color: #F59E0B;">Drift: missing 'status' ⚠️</span></span>
+
+              <div class="cockpit-menu-group">
+                <div class="cockpit-menu-header">Monitoring</div>
+                <button class="cockpit-nav-item" data-tab="health">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                  <span>Server Health</span>
+                </button>
+                <button class="cockpit-nav-item" data-tab="settings">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                  <span>Settings</span>
+                </button>
               </div>
-              <div class="event-row-sim">
-                <span style="color: #F87171; font-weight: 600;">GET /api/users?id=1' OR 1=1</span>
-                <span style="color: #EF4444; font-weight: 600;">CRITICAL: SQL Injection Blocked 🚨</span>
+
+              <div class="cockpit-sidebar-footer">
+                <div class="footer-row">
+                  <span>Protocol</span>
+                  <span class="mono-val">v0.1.0</span>
+                </div>
+                <div class="footer-row">
+                  <span>Telemetry</span>
+                  <span class="green-val">100% Local</span>
+                </div>
               </div>
-            </div>
+            </aside>
+
+            <!-- Center Content Body -->
+            <main class="cockpit-content">
+              <!-- View: Analytics (Default Actual Dashboard) -->
+              <div class="cockpit-view active" id="view-analytics">
+                <!-- 4 Stat Cards with Sparklines -->
+                <div class="cockpit-stat-grid">
+                  <!-- Card 1: Total Requests -->
+                  <div class="cockpit-card">
+                    <span class="card-caption">Total Requests</span>
+                    <div class="card-val-row">
+                      <span class="card-big-num" id="simStatTotal">1,426</span>
+                      <span class="badge-mini success">Active</span>
+                    </div>
+                    <div class="card-sparkline-row">
+                      <span class="sparkline-sub">Total requests log</span>
+                      <svg width="70" height="24" viewBox="0 0 70 24" class="sparkline-svg">
+                        <path d="M0 18 Q 15 12, 30 15 T 50 8 T 70 4" fill="none" stroke="#6366F1" stroke-width="2"/>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <!-- Card 2: Error Rate -->
+                  <div class="cockpit-card">
+                    <span class="card-caption">Error Rate %</span>
+                    <div class="card-val-row">
+                      <span class="card-big-num" id="simStatErrorRate">0.0%</span>
+                      <span class="badge-mini success" id="simErrorBadge">Safe</span>
+                    </div>
+                    <div class="card-sparkline-row">
+                      <span class="sparkline-sub">Recent 4xx/5xx</span>
+                      <svg width="70" height="24" viewBox="0 0 70 24" class="sparkline-svg">
+                        <path d="M0 20 L 70 20" fill="none" stroke="#10B981" stroke-width="2"/>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <!-- Card 3: Avg Latency -->
+                  <div class="cockpit-card">
+                    <span class="card-caption">Avg Latency</span>
+                    <div class="card-val-row">
+                      <span class="card-big-num"><span id="simStatLatency">12.4</span><span class="unit">ms</span></span>
+                      <span class="badge-mini primary">p95: 18ms</span>
+                    </div>
+                    <div class="card-sparkline-row">
+                      <span class="sparkline-sub">Rolling delay</span>
+                      <svg width="70" height="24" viewBox="0 0 70 24" class="sparkline-svg">
+                        <path d="M0 14 Q 20 8, 40 12 T 70 9" fill="none" stroke="#10B981" stroke-width="2"/>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <!-- Card 4: Active Threats -->
+                  <div class="cockpit-card">
+                    <span class="card-caption">Active Threats</span>
+                    <div class="card-val-row">
+                      <span class="card-big-num red-text" id="simStatThreats">1</span>
+                      <span class="badge-mini danger" id="simThreatBadge">Blocked</span>
+                    </div>
+                    <div class="card-sparkline-row">
+                      <span class="sparkline-sub">Signature matched</span>
+                      <svg width="70" height="24" viewBox="0 0 70 24" class="sparkline-svg">
+                        <path d="M0 20 Q 30 18, 50 10 T 70 6" fill="none" stroke="#EF4444" stroke-width="2"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Middle Charts: Traffic Wave & System Gauges -->
+                <div class="cockpit-middle-grid">
+                  <!-- Traffic Area Chart -->
+                  <div class="cockpit-card chart-card">
+                    <div class="chart-header">
+                      <div>
+                        <h4 class="card-title">Real-Time Traffic & Latency Curve</h4>
+                        <span class="card-subtitle">Last 30 requests millisecond response profile</span>
+                      </div>
+                      <div class="chart-legend">
+                        <span class="legend-dot green"></span>
+                        <span>Latency (ms)</span>
+                      </div>
+                    </div>
+                    <div class="chart-body">
+                      <svg class="traffic-chart-svg" viewBox="0 0 500 120" preserveAspectRatio="none">
+                        <defs>
+                          <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#10B981" stop-opacity="0.25"/>
+                            <stop offset="100%" stop-color="#10B981" stop-opacity="0.0"/>
+                          </linearGradient>
+                        </defs>
+                        <!-- Grid lines -->
+                        <line x1="0" y1="30" x2="500" y2="30" stroke="currentColor" stroke-opacity="0.07" stroke-dasharray="3,3"/>
+                        <line x1="0" y1="60" x2="500" y2="60" stroke="currentColor" stroke-opacity="0.07" stroke-dasharray="3,3"/>
+                        <line x1="0" y1="90" x2="500" y2="90" stroke="currentColor" stroke-opacity="0.07" stroke-dasharray="3,3"/>
+                        <!-- Area Fill -->
+                        <polygon points="0,95 40,88 80,92 120,70 160,85 200,90 240,65 280,82 320,88 360,74 400,85 440,60 480,78 500,75 500,120 0,120" fill="url(#chartGrad)"/>
+                        <!-- Line -->
+                        <polyline points="0,95 40,88 80,92 120,70 160,85 200,90 240,65 280,82 320,88 360,74 400,85 440,60 480,78 500,75" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round"/>
+                        <!-- Data dots -->
+                        <circle cx="240" cy="65" r="4" fill="#10B981"/>
+                        <circle cx="440" cy="60" r="4" fill="#10B981"/>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <!-- System Health Gauges -->
+                  <div class="cockpit-card gauges-card">
+                    <h4 class="card-title">Node / OS Telemetry</h4>
+                    <span class="card-subtitle">Zero daemon overhead</span>
+                    <div class="gauges-flex">
+                      <div class="gauge-item">
+                        <div class="gauge-circle">
+                          <svg viewBox="0 0 36 36" class="circular-chart green">
+                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            <path class="circle" stroke-dasharray="14, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            <text x="18" y="20.35" class="percentage">14%</text>
+                          </svg>
+                        </div>
+                        <span class="gauge-label">CPU Load</span>
+                      </div>
+                      <div class="gauge-item">
+                        <div class="gauge-circle">
+                          <svg viewBox="0 0 36 36" class="circular-chart indigo">
+                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            <path class="circle" stroke-dasharray="28, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            <text x="18" y="20.35" class="percentage">28%</text>
+                          </svg>
+                        </div>
+                        <span class="gauge-label">Memory RAM</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Bottom Table: Real HTTP & Security Stream -->
+                <div class="cockpit-card table-card">
+                  <div class="table-header-row">
+                    <div>
+                      <h4 class="card-title">Live Ingested HTTP & Security Stream</h4>
+                      <span class="card-subtitle">Real-time event ring buffer with OpenAPI drift verification</span>
+                    </div>
+                    <span class="sim-badge success">Live Ingestion</span>
+                  </div>
+
+                  <div class="cockpit-table-wrapper">
+                    <table class="cockpit-table">
+                      <thead>
+                        <tr>
+                          <th>METHOD</th>
+                          <th>ROUTE / ENDPOINT</th>
+                          <th>STATUS</th>
+                          <th>LATENCY</th>
+                          <th>CONTRACT / SECURITY STATE</th>
+                          <th>TIMESTAMP</th>
+                        </tr>
+                      </thead>
+                      <tbody id="simTableBody">
+                        <tr class="row-highlight">
+                          <td><span class="method-badge get">GET</span></td>
+                          <td class="route-mono">/api/orders/ord_101</td>
+                          <td><span class="status-badge success">200 OK</span></td>
+                          <td class="lat-mono">8ms</td>
+                          <td><span class="tag-verified">Contract Verified ✓</span></td>
+                          <td class="time-sub">Just now</td>
+                        </tr>
+                        <tr>
+                          <td><span class="method-badge get">GET</span></td>
+                          <td class="route-mono">/api/orders/ord_drift</td>
+                          <td><span class="status-badge success">200 OK</span></td>
+                          <td class="lat-mono">14ms</td>
+                          <td><span class="tag-drift">Drift: missing 'status' field ⚠️</span></td>
+                          <td class="time-sub">2s ago</td>
+                        </tr>
+                        <tr>
+                          <td><span class="method-badge get">GET</span></td>
+                          <td class="route-mono">/api/users?id=1' OR 1=1</td>
+                          <td><span class="status-badge danger">403 FORBIDDEN</span></td>
+                          <td class="lat-mono">1ms</td>
+                          <td><span class="tag-threat">Threat: SQL Injection Blocked 🚨</span></td>
+                          <td class="time-sub">5s ago</td>
+                        </tr>
+                        <tr>
+                          <td><span class="method-badge get">GET</span></td>
+                          <td class="route-mono">/api/analytics/heavy-report</td>
+                          <td><span class="status-badge success">200 OK</span></td>
+                          <td class="lat-mono slow-text">487ms</td>
+                          <td><span class="tag-slow">Latency Alert (Slow) ⏱</span></td>
+                          <td class="time-sub">8s ago</td>
+                        </tr>
+                        <tr>
+                          <td><span class="method-badge post">POST</span></td>
+                          <td class="route-mono">/api/auth/token</td>
+                          <td><span class="status-badge success">200 OK</span></td>
+                          <td class="lat-mono">24ms</td>
+                          <td><span class="tag-verified">Contract Verified ✓</span></td>
+                          <td class="time-sub">14s ago</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- View: Live Traffic (Tab 2) -->
+              <div class="cockpit-view" id="view-traffic">
+                <div class="cockpit-card">
+                  <div class="chart-header">
+                    <h4 class="card-title">Live Traffic Feed</h4>
+                    <span class="badge-mini primary">Filtering: ALL (1,426 requests)</span>
+                  </div>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    Full request logs with headers, client IPs, user agents, query strings, and payload inspection.
+                  </p>
+                </div>
+              </div>
+
+              <!-- View: Contracts (Tab 3) -->
+              <div class="cockpit-view" id="view-contracts">
+                <div class="cockpit-card">
+                  <h4 class="card-title">Auto-Discovered Contracts & OpenAPI Specs</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    Pulse crawls your router tree (Express/FastAPI/Go) and matches every incoming call against OpenAPI schemas to detect drift without writing manual contract tests.
+                  </p>
+                </div>
+              </div>
+
+              <!-- View: Security (Tab 4) -->
+              <div class="cockpit-view" id="view-security">
+                <div class="cockpit-card">
+                  <h4 class="card-title">Threat Watchdog Log</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    Blocked SQLi, XSS, and Path Traversal probes with matched regex signatures and zero third-party cloud data exposure.
+                  </p>
+                </div>
+              </div>
+
+              <!-- View: Runner (Tab 5) -->
+              <div class="cockpit-view" id="view-runner">
+                <div class="cockpit-card">
+                  <h4 class="card-title">Interactive API Runner</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    1-Click replay test environment. Modify headers, query parameters, or payload bodies and run live requests against your server.
+                  </p>
+                </div>
+              </div>
+            </main>
           </div>
         </div>
       </div>

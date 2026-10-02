@@ -13,7 +13,7 @@ import { SettingsTab } from './components/SettingsTab';
 import PulseNavbar from './components/Navbar/Navbar';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'requests' | 'security' | 'health' | 'settings' | 'routes' | 'playground'>('playground');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'requests' | 'security' | 'health' | 'settings' | 'routes' | 'playground'>('dashboard');
   const [authSecret, setAuthSecret] = useState<string>(() => localStorage.getItem('pulse_auth') || '');
   const [passwordInput, setPasswordInput] = useState<string>('');
   const [isAuthorized, setIsAuthorized] = useState<boolean>(true);
