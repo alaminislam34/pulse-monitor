@@ -4,46 +4,84 @@ import {
   Terminal, 
   Layers, 
   Play, 
+  BarChart3,
   Settings 
 } from 'lucide-react';
 
 interface SidebarProps {
   activeTab: 'dashboard' | 'requests' | 'security' | 'health' | 'settings' | 'routes' | 'playground';
   setActiveTab: (tab: 'dashboard' | 'requests' | 'security' | 'health' | 'settings' | 'routes' | 'playground') => void;
+  threatCount?: number;
+  driftCount?: number;
 }
 
-export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
+export function Sidebar({ activeTab, setActiveTab, threatCount = 0, driftCount = 0 }: SidebarProps) {
   return (
     <aside className="sidebar">
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <button onClick={() => setActiveTab('dashboard')} className={`nav-link-item ${activeTab === 'dashboard' ? 'active' : ''}`}>
-          <Layers size={16} />
-          <span>Dashboard</span>
-        </button>
-        <button onClick={() => setActiveTab('requests')} className={`nav-link-item ${activeTab === 'requests' ? 'active' : ''}`}>
-          <Terminal size={16} />
-          <span>API Logs</span>
-        </button>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+        <div style={{ padding: '0.5rem 0.75rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          API Cockpit
+        </div>
+        
         <button onClick={() => setActiveTab('playground')} className={`nav-link-item ${activeTab === 'playground' ? 'active' : ''}`}>
-          <Play size={16} />
-          <span>Playground</span>
+          <Play size={15} strokeWidth={2.2} />
+          <span>API Runner</span>
         </button>
+
+        <button onClick={() => setActiveTab('requests')} className={`nav-link-item ${activeTab === 'requests' ? 'active' : ''}`}>
+          <Activity size={15} strokeWidth={2.2} />
+          <span>Live Traffic</span>
+          {driftCount > 0 && (
+            <span className="badge" style={{ marginLeft: 'auto', background: 'rgba(245, 158, 11, 0.15)', color: 'var(--accent-warning)', fontSize: '0.65rem', padding: '0.1rem 0.4rem', borderRadius: '999px' }}>
+              {driftCount}
+            </span>
+          )}
+        </button>
+
+        <button onClick={() => setActiveTab('routes')} className={`nav-link-item ${activeTab === 'routes' ? 'active' : ''}`}>
+          <Layers size={15} strokeWidth={2.2} />
+          <span>Contracts & Routes</span>
+        </button>
+
         <button onClick={() => setActiveTab('security')} className={`nav-link-item ${activeTab === 'security' ? 'active' : ''}`}>
-          <ShieldAlert size={16} />
-          <span>Threats</span>
+          <ShieldAlert size={15} strokeWidth={2.2} />
+          <span>Threat Watchdog</span>
+          {threatCount > 0 && (
+            <span className="badge" style={{ marginLeft: 'auto', background: 'rgba(239, 68, 68, 0.15)', color: 'var(--accent-danger)', fontSize: '0.65rem', padding: '0.1rem 0.4rem', borderRadius: '999px' }}>
+              {threatCount}
+            </span>
+          )}
         </button>
+
+        <div style={{ padding: '0.75rem 0.75rem 0.25rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          Monitoring
+        </div>
+
+        <button onClick={() => setActiveTab('dashboard')} className={`nav-link-item ${activeTab === 'dashboard' ? 'active' : ''}`}>
+          <BarChart3 size={15} strokeWidth={2.2} />
+          <span>Analytics</span>
+        </button>
+
         <button onClick={() => setActiveTab('health')} className={`nav-link-item ${activeTab === 'health' ? 'active' : ''}`}>
-          <Activity size={16} />
+          <Terminal size={15} strokeWidth={2.2} />
           <span>Server Health</span>
         </button>
-        <button onClick={() => setActiveTab('routes')} className={`nav-link-item ${activeTab === 'routes' ? 'active' : ''}`}>
-          <Layers size={16} />
-          <span>Routes Map</span>
-        </button>
+
         <button onClick={() => setActiveTab('settings')} className={`nav-link-item ${activeTab === 'settings' ? 'active' : ''}`}>
-          <Settings size={16} />
+          <Settings size={15} strokeWidth={2.2} />
           <span>Settings</span>
         </button>
+      </div>
+
+      <div style={{ padding: '0.75rem', borderTop: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+        <div style={{ fontSize: '0.75rem', color: 'var(--text-light)', display: 'flex', justifyContent: 'space-between' }}>
+          <span>Protocol</span>
+          <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>v0.1.0</span>
+        </div>
+        <div style={{ fontSize: '0.75rem', color: 'var(--text-light)', display: 'flex', justifyContent: 'space-between' }}>
+          <span>Telemetry</span>
+          <span style={{ color: 'var(--accent-success)', fontWeight: 600 }}>100% Local</span>
+        </div>
       </div>
     </aside>
   );
@@ -52,17 +90,17 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
 export function MobileBottomNav({ activeTab, setActiveTab }: SidebarProps) {
   return (
     <nav className="mobile-bottom-nav">
-      <button onClick={() => setActiveTab('dashboard')} className={`mobile-nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`}>
-        <Layers size={18} />
-        <span>Dashboard</span>
-      </button>
-      <button onClick={() => setActiveTab('requests')} className={`mobile-nav-btn ${activeTab === 'requests' ? 'active' : ''}`}>
-        <Terminal size={18} />
-        <span>API Logs</span>
-      </button>
       <button onClick={() => setActiveTab('playground')} className={`mobile-nav-btn ${activeTab === 'playground' ? 'active' : ''}`}>
         <Play size={18} />
-        <span>Playground</span>
+        <span>Runner</span>
+      </button>
+      <button onClick={() => setActiveTab('requests')} className={`mobile-nav-btn ${activeTab === 'requests' ? 'active' : ''}`}>
+        <Activity size={18} />
+        <span>Traffic</span>
+      </button>
+      <button onClick={() => setActiveTab('routes')} className={`mobile-nav-btn ${activeTab === 'routes' ? 'active' : ''}`}>
+        <Layers size={18} />
+        <span>Routes</span>
       </button>
       <button onClick={() => setActiveTab('security')} className={`mobile-nav-btn ${activeTab === 'security' ? 'active' : ''}`}>
         <ShieldAlert size={18} />
