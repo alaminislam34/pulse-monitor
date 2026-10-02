@@ -35,8 +35,25 @@ export interface DiscoveredEndpoint {
   path: string;
   method: string;
   summary?: string;
+  description?: string;
   tags?: string[];
   operationId?: string;
+  parameters?: Array<{
+    name: string;
+    in: 'query' | 'path' | 'header' | 'body';
+    required?: boolean;
+    description?: string;
+    schema?: any;
+    example?: any;
+  }>;
+  requestBody?: {
+    description?: string;
+    required?: boolean;
+    content?: Record<string, any>;
+    schema?: any;
+    example?: any;
+  };
+  responses?: Record<string, { description?: string; content?: Record<string, any> }>;
 }
 
 export interface RequestMetrics {

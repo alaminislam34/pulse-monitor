@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Lock, RefreshCw } from 'lucide-react';
 
-import { MonitorData, RequestMetrics, SecurityAlert, Recommendation } from './types';
+import { MonitorData, RequestMetrics, SecurityAlert, Recommendation, DiscoveredEndpoint } from './types';
 import { Sidebar, MobileBottomNav } from './components/Sidebar';
 import { DashboardTab } from './components/DashboardTab';
 import { RequestsTab } from './components/RequestsTab';
@@ -10,6 +10,7 @@ import { SecurityTab } from './components/SecurityTab';
 import { HealthTab } from './components/HealthTab';
 import { RoutesTab } from './components/RoutesTab';
 import { SettingsTab } from './components/SettingsTab';
+import { ApiInspectorModal } from './components/ApiInspectorModal';
 import PulseNavbar from './components/Navbar/Navbar';
 
 export default function App() {
@@ -31,6 +32,15 @@ export default function App() {
   const [filterStatus, setFilterStatus] = useState<string>('ALL');
   const [selectedRequest, setSelectedRequest] = useState<RequestMetrics | null>(null);
   const [selectedAlert, setSelectedAlert] = useState<SecurityAlert | null>(null);
+
+  // Inspector Modal State
+  const [inspectingEndpoint, setInspectingEndpoint] = useState<DiscoveredEndpoint | null>(null);
+  const [isInspectorOpen, setIsInspectorOpen] = useState<boolean>(false);
+
+  const handleInspectEndpoint = (endpoint: DiscoveredEndpoint) => {
+    setInspectingEndpoint(endpoint);
+    setIsInspectorOpen(true);
+  };
 
   // Sandbox State
   const [sandboxPayload, setSandboxPayload] = useState<string>('{"username": "admin\' or \'1\'=\'1", "password": "123"}');
@@ -111,22 +121,6 @@ export default function App() {
     } finally {
       setPgLoading(false);
     }
-  };
-
-  const handleTestRoute = (route: { path: string; method: string }) => {
-    setPgPath(route.path);
-    setPgMethod(route.method);
-    setPgQueryParams([]);
-    setPgHeaders([{ key: 'Content-Type', value: 'application/json' }]);
-    if (['POST', 'PUT', 'PATCH'].includes(route.method)) {
-      setPgBody('{\n  \n}');
-      setPgActiveSubTab('body');
-    } else {
-      setPgBody('');
-      setPgActiveSubTab('headers');
-    }
-    setPgResponse(null);
-    setActiveTab('playground');
   };
 
   const handleTestRequest = (req: RequestMetrics) => {
@@ -395,7 +389,22 @@ export default function App() {
     );
   }
 
-  const { system, requests, threats, config, discoveredRoutes } = data;
+  const { 
+    system, 
+    requests, 
+    threats, 
+    config, 
+    discoveredRoutes = [], 
+    documentedRoutes = [], 
+    hasOpenApiSpec = false 
+  } = data;
+
+  const totalRoutesCount = useMemo(() => {
+    const map = new Set<string>();
+    documentedRoutes.forEach(d => map.add(`${d.method.toUpperCase()} ${d.path}`));
+    discoveredRoutes.forEach(d => map.add(`${d.method.toUpperCase()} ${d.path}`));
+    return map.size;
+  }, [documentedRoutes, discoveredRoutes]);
 
   // Recommendations
   const getRecommendations = (): Recommendation[] => {
@@ -476,6 +485,7 @@ export default function App() {
           setActiveTab={setActiveTab} 
           threatCount={threats.length}
           driftCount={requests.filter(r => r.drift?.hasSchemaMismatch).length}
+          routesCount={totalRoutesCount}
         />
 
         {/* Scrollable Center Content Area */}
@@ -486,6 +496,7 @@ export default function App() {
               setActiveTab={setActiveTab}
               setSelectedRequest={setSelectedRequest}
               setSelectedAlert={setSelectedAlert}
+              onInspectEndpoint={handleInspectEndpoint}
             />
           )}
 
@@ -538,7 +549,9 @@ export default function App() {
           {activeTab === 'routes' && (
             <RoutesTab
               discoveredRoutes={discoveredRoutes}
-              handleTestRoute={handleTestRoute}
+              documentedRoutes={documentedRoutes}
+              hasOpenApiSpec={hasOpenApiSpec}
+              onInspectEndpoint={handleInspectEndpoint}
             />
           )}
 
@@ -557,6 +570,15 @@ export default function App() {
           )}
         </div>
       </div>
+
+      {/* Interactive Swagger & Stripe Workbench Modal */}
+      <ApiInspectorModal
+        endpoint={inspectingEndpoint}
+        isOpen={isInspectorOpen}
+        onClose={() => setIsInspectorOpen(false)}
+        authSecret={authSecret}
+        onExecuted={() => fetchData()}
+      />
 
       {/* Mobile Bottom Navigation Bar */}
       <MobileBottomNav activeTab={activeTab} setActiveTab={setActiveTab} />

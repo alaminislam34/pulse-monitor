@@ -69,6 +69,10 @@ export class Monitor {
     this.securityBuffer = new CircularBuffer<SecurityAlert>(this.config.maxBufferSize);
     this.threatDetector = new ThreatDetector();
     this.openApiManager = new OpenApiManager(this.config.openApiSpec);
+    const documented = this.openApiManager.getDocumentedEndpoints();
+    if (documented.length > 0) {
+      this.registerDiscoveredRoutes(documented.map(d => ({ path: d.path, method: d.method })));
+    }
 
     // Auto-detect serverless environment
     this.isServerless = !!(
@@ -380,7 +384,8 @@ export class Monitor {
 
   public registerDiscoveredRoutes(routes: Array<{ path: string; method: string }>): void {
     const endpoint = this.config.dashboardEndpoint;
-    this.discoveredRoutes = routes.filter(
+    const combined = [...this.discoveredRoutes, ...routes];
+    this.discoveredRoutes = combined.filter(
       (route, index, self) =>
         !route.path.startsWith(endpoint) &&
         index === self.findIndex(r => r.path === route.path && r.method === route.method)

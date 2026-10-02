@@ -14,8 +14,12 @@ export interface DiscoveredEndpoint {
   path: string;
   method: string;
   summary?: string;
+  description?: string;
   tags?: string[];
   operationId?: string;
+  parameters?: any[];
+  requestBody?: any;
+  responses?: any;
 }
 
 export class OpenApiManager {
@@ -187,12 +191,17 @@ export class OpenApiManager {
       const httpMethods = ['get', 'post', 'put', 'delete', 'patch'];
       for (const m of httpMethods) {
         if (pathItem[m]) {
+          const op = pathItem[m];
           endpoints.push({
             path,
             method: m.toUpperCase(),
-            summary: pathItem[m].summary,
-            tags: pathItem[m].tags,
-            operationId: pathItem[m].operationId,
+            summary: op.summary || `${m.toUpperCase()} ${path}`,
+            description: op.description,
+            tags: op.tags && op.tags.length > 0 ? op.tags : ['General'],
+            operationId: op.operationId,
+            parameters: op.parameters || pathItem.parameters || [],
+            requestBody: op.requestBody,
+            responses: op.responses,
           });
         }
       }
