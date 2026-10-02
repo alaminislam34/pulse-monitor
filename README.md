@@ -21,16 +21,16 @@ Install the package via your preferred package manager:
 
 ```bash
 # npm
-npm install pulse-monitor
+npm install @alaminislam34/server-monitor
 
 # pnpm
-pnpm add pulse-monitor
+pnpm add @alaminislam34/server-monitor
 
 # yarn
-yarn add pulse-monitor
+yarn add @alaminislam34/server-monitor
 
 # bun
-bun add pulse-monitor
+bun add @alaminislam34/server-monitor
 ```
 
 ---
@@ -41,16 +41,19 @@ bun add pulse-monitor
 
 ```typescript
 import express from 'express';
-import { Monitor, expressPulseMiddleware } from 'pulse-monitor';
+import { Monitor, expressPulseMiddleware } from '@alaminislam34/server-monitor';
 
 const app = express();
+app.use(express.json());
 
 // Initialize the Monitor instance
 const monitor = new Monitor({
+  serviceName: 'Production API',
   maxBufferSize: 1000,
   enableThreatDetection: true,
-  dashboardEndpoint: '/pulse', // Accessible path
-  authSecret: 'your-secure-dashboard-password', // Optional password
+  dashboardEndpoint: '/pulse',              // Dashboard URL: http://localhost:port/pulse
+  openApiSpecUrl: '/openapi.json',          // Auto-load Swagger/OpenAPI spec
+  authSecret: 'your-secure-password',       // Optional password protection
 });
 
 // Register the Pulse middleware
@@ -75,7 +78,7 @@ app.listen(3000, () => {
 ```typescript
 // pulse.module.ts
 import { Module, Global } from '@nestjs/common';
-import { Monitor } from 'pulse-monitor';
+import { Monitor } from '@alaminislam34/server-monitor';
 
 @Global()
 @Module({
@@ -83,6 +86,7 @@ import { Monitor } from 'pulse-monitor';
     {
       provide: Monitor,
       useValue: new Monitor({
+        serviceName: 'NestJS Service',
         maxBufferSize: 1000,
         enableThreatDetection: true,
         dashboardEndpoint: '/pulse',
@@ -101,7 +105,7 @@ export class PulseModule {}
 // main.ts
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Monitor, NestJSPulseInterceptor, expressPulseMiddleware } from 'pulse-monitor';
+import { Monitor, NestJSPulseInterceptor, expressPulseMiddleware } from '@alaminislam34/server-monitor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
