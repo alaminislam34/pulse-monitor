@@ -16,7 +16,7 @@ function initInstallTabs() {
     npm: 'npm install pulse-monitor',
     pnpm: 'pnpm add pulse-monitor',
     pip: 'pip install pulse-monitor',
-    go: 'go get github.com/alaminislam34/server-monitor/sdk/go',
+    go: 'go get github.com/alaminislam34/pulse-monitor/sdk/go',
     yarn: 'yarn add pulse-monitor',
   };
 
