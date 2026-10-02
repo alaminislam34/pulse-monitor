@@ -38,7 +38,8 @@
   "scripts": {
     "build": "tsup && pnpm --filter pulse-monitor-dashboard build",
     "dev": "tsup --watch",
-    "test": "tsx tests/run-tests.ts"
+    "test": "tsx tests/run-tests.ts",
+    "docs:serve": "npx serve site"
   },
   "peerDependencies": {
     "express": ">=4.0.0",
