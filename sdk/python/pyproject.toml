@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pulse-monitor"
+version = "0.1.0"
+authors = [
+  { name = "Alamin Islam", email = "alaminislam34@gmail.com" },
+]
+description = "Universal local-first telemetry, threat detection, and API observability middleware"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+optional-dependencies = {
+  fastapi = ["fastapi", "starlette", "uvicorn"],
+}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pulse_monitor*"]
