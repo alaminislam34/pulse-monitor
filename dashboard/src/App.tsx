@@ -23,6 +23,7 @@ export default function App() {
   const [data, setData] = useState<MonitorData | null>(null);
   const [pollInterval, setPollInterval] = useState<number>(5000);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const [isLiveStreaming, setIsLiveStreaming] = useState<boolean>(false);
 
   // Filters
   const [searchPath, setSearchPath] = useState<string>('');
@@ -183,15 +184,78 @@ export default function App() {
     }
   };
 
-  // Setup polling
+  // Setup SSE stream and polling fallback
   useEffect(() => {
     fetchData();
+
+    // Initialize Server-Sent Events (SSE)
+    const baseEndpoint = window.location.pathname.replace(/\/$/, "");
+    const streamUrl = `${baseEndpoint}/api/stream${authSecret ? `?secret=${encodeURIComponent(authSecret)}` : ''}`;
+
+    let eventSource: EventSource | null = null;
+    try {
+      eventSource = new EventSource(streamUrl);
+      eventSource.onopen = () => {
+        setIsLiveStreaming(true);
+      };
+
+      eventSource.onmessage = (event) => {
+        try {
+          const parsed = JSON.parse(event.data);
+          if (parsed.type === 'request') {
+            setData((prev) => {
+              if (!prev) return prev;
+              const newReq: RequestMetrics = {
+                timestamp: parsed.timestamp,
+                path: parsed.request?.path || '/',
+                method: parsed.request?.method || 'GET',
+                statusCode: parsed.response?.statusCode || 200,
+                durationMs: parsed.response?.durationMs || 0,
+                ip: parsed.request?.ip || '127.0.0.1',
+                userAgent: parsed.request?.userAgent,
+                drift: parsed.drift,
+              };
+              return {
+                ...prev,
+                requests: [...prev.requests, newReq],
+              };
+            });
+          } else if (parsed.type === 'threat') {
+            setData((prev) => {
+              if (!prev) return prev;
+              const newThreat: SecurityAlert = {
+                timestamp: parsed.timestamp,
+                ip: parsed.clientIp || '127.0.0.1',
+                path: parsed.targetField || '/',
+                method: 'ALERT',
+                attackType: parsed.threatType || 'Threat',
+                severity: parsed.severity || 'HIGH',
+                details: parsed.matchedPattern || 'Suspicious payload detected',
+              };
+              return {
+                ...prev,
+                threats: [...prev.threats, newThreat],
+              };
+            });
+          }
+        } catch (e) {}
+      };
+
+      eventSource.onerror = () => {
+        setIsLiveStreaming(false);
+      };
+    } catch (e) {
+      setIsLiveStreaming(false);
+    }
+
     if (pollInterval > 0) {
       pollTimerRef.current = setInterval(() => {
         fetchData();
       }, pollInterval);
     }
+
     return () => {
+      if (eventSource) eventSource.close();
       if (pollTimerRef.current) clearInterval(pollTimerRef.current);
     };
   }, [pollInterval, authSecret]);
@@ -416,6 +480,7 @@ export default function App() {
         isRefreshing={isRefreshing}
         fetchData={fetchData}
         system={system}
+        isLiveStreaming={isLiveStreaming}
       />
 
       {/* Main Layout Workspace */}

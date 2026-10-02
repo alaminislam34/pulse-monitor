@@ -81,6 +81,7 @@ export function RequestsTab({
                   <th>Method</th>
                   <th>Endpoint</th>
                   <th>Status</th>
+                  <th>Contract</th>
                   <th>Client IP</th>
                   <th>Latency</th>
                 </tr>
@@ -97,6 +98,25 @@ export function RequestsTab({
                     <td style={{ fontWeight: 500, fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{req.path}</td>
                     <td>
                       <span style={{ color: getStatusClassColor(req.statusCode), fontWeight: 700 }}>{req.statusCode}</span>
+                    </td>
+                    <td>
+                      {req.drift ? (
+                        !req.drift.isDocumented ? (
+                          <span className="badge" style={{ background: 'rgba(245, 158, 11, 0.12)', color: '#f59e0b', fontSize: '0.7rem', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                            Undocumented
+                          </span>
+                        ) : req.drift.hasSchemaMismatch ? (
+                          <span className="badge" style={{ background: 'rgba(239, 68, 68, 0.12)', color: '#ef4444', fontSize: '0.7rem', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+                            Drift ⚠️
+                          </span>
+                        ) : (
+                          <span className="badge" style={{ background: 'rgba(16, 185, 129, 0.12)', color: '#10b981', fontSize: '0.7rem', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                            Verified ✓
+                          </span>
+                        )
+                      ) : (
+                        <span style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>—</span>
+                      )}
                     </td>
                     <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)' }}>{req.ip}</td>
                     <td style={{ fontFamily: 'var(--font-mono)' }}>{req.durationMs.toFixed(1)} ms</td>
@@ -164,6 +184,49 @@ export function RequestsTab({
                 <p style={{ fontFamily: 'var(--font-mono)', background: 'var(--bg-input)', padding: '0.45rem', borderRadius: '6px', marginTop: '0.15rem', fontSize: '0.75rem', lineHeight: '1.4' }}>
                   {selectedRequest.userAgent}
                 </p>
+              </div>
+            )}
+
+            {selectedRequest.drift && (
+              <div style={{ background: 'var(--bg-input)', padding: '0.75rem', borderRadius: '8px', border: `1px solid ${selectedRequest.drift.hasSchemaMismatch ? 'rgba(239, 68, 68, 0.4)' : 'rgba(16, 185, 129, 0.4)'}` }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                  <span style={{ fontWeight: 600, fontSize: '0.75rem', color: selectedRequest.drift.hasSchemaMismatch ? '#ef4444' : '#10b981' }}>
+                    {selectedRequest.drift.hasSchemaMismatch ? '⚠️ OpenAPI Contract Drift' : '✓ OpenAPI Contract Verified'}
+                  </span>
+                  <span className="badge" style={{ fontSize: '0.65rem', background: 'var(--bg-card)' }}>
+                    {selectedRequest.drift.driftCategory || 'CONFORMANT'}
+                  </span>
+                </div>
+                {selectedRequest.drift.matchedOpenApiPath && (
+                  <p style={{ margin: '0.2rem 0', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                    Matched: <code style={{ color: 'var(--accent-primary)' }}>{selectedRequest.drift.matchedOpenApiPath}</code>
+                  </p>
+                )}
+                {selectedRequest.drift.description && (
+                  <p style={{ margin: '0.2rem 0', fontSize: '0.75rem', color: selectedRequest.drift.hasSchemaMismatch ? '#f87171' : 'var(--text-muted)' }}>
+                    {selectedRequest.drift.description}
+                  </p>
+                )}
+                {selectedRequest.drift.diff?.missingRequired && (
+                  <div style={{ marginTop: '0.35rem' }}>
+                    <span style={{ fontSize: '0.7rem', color: '#f87171' }}>Missing required fields:</span>
+                    <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap', marginTop: '0.15rem' }}>
+                      {selectedRequest.drift.diff.missingRequired.map((f, i) => (
+                        <span key={i} className="badge" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', fontSize: '0.65rem' }}>-{f}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {selectedRequest.drift.diff?.undocumentedFields && (
+                  <div style={{ marginTop: '0.35rem' }}>
+                    <span style={{ fontSize: '0.7rem', color: '#fbbf24' }}>Undocumented fields:</span>
+                    <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap', marginTop: '0.15rem' }}>
+                      {selectedRequest.drift.diff.undocumentedFields.map((f, i) => (
+                        <span key={i} className="badge" style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b', fontSize: '0.65rem' }}>+{f}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
             {selectedRequest.inferredReqType && (

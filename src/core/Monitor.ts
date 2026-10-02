@@ -4,6 +4,7 @@ import os from 'os';
 import { Worker } from 'worker_threads';
 import { CircularBuffer } from './CircularBuffer';
 import { ThreatDetector, SecurityAlert } from '../security/ThreatDetector';
+import { OpenApiManager, OpenApiDriftResult } from '../openapi/OpenApiManager';
 
 export interface MonitorConfig {
   maxBufferSize?: number;
@@ -16,6 +17,7 @@ export interface MonitorConfig {
   maxBodySizeKb?: number;
   serviceName?: string;
   openApiSpecUrl?: string;
+  openApiSpec?: any;
 }
 
 export interface RequestMetrics {
@@ -30,6 +32,7 @@ export interface RequestMetrics {
   resBody?: string;
   inferredReqType?: string;
   inferredResType?: string;
+  drift?: OpenApiDriftResult;
 }
 
 export class Monitor {
@@ -44,6 +47,7 @@ export class Monitor {
   private lastEventLoopTime: number = Date.now();
   private discoveredRoutes: Array<{ path: string; method: string }> = [];
   private streamSubscribers: Set<(event: any) => void> = new Set();
+  private openApiManager: OpenApiManager;
 
   constructor(config: MonitorConfig = {}) {
     this.startTime = Date.now();
@@ -58,11 +62,13 @@ export class Monitor {
       maxBodySizeKb: config.maxBodySizeKb ?? 64,
       serviceName: config.serviceName ?? 'Pulse API Service',
       openApiSpecUrl: config.openApiSpecUrl ?? '',
+      openApiSpec: config.openApiSpec ?? null,
     };
 
     this.metricsBuffer = new CircularBuffer<RequestMetrics>(this.config.maxBufferSize);
     this.securityBuffer = new CircularBuffer<SecurityAlert>(this.config.maxBufferSize);
     this.threatDetector = new ThreatDetector();
+    this.openApiManager = new OpenApiManager(this.config.openApiSpec);
 
     // Auto-detect serverless environment
     this.isServerless = !!(
@@ -289,10 +295,34 @@ export class Monitor {
       }
     }
 
-    // 2. Offload metrics depending on environment
+    // 2. Validate OpenAPI contract drift
+    let parsedResBody: any = undefined;
+    if (reqDetails?.resBody) {
+      try {
+        parsedResBody = typeof reqDetails.resBody === 'string' ? JSON.parse(reqDetails.resBody) : reqDetails.resBody;
+      } catch {}
+    }
+    const driftResult = this.openApiManager.validateTraffic(
+      metrics.method,
+      metrics.path,
+      metrics.statusCode,
+      parsedResBody
+    );
+    metrics.drift = driftResult;
+
+    if (driftResult.hasSchemaMismatch) {
+      this.broadcastEvent({
+        id: `drf_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        type: 'drift',
+        timestamp: metrics.timestamp,
+        ...driftResult,
+      });
+    }
+
+    // 3. Offload metrics depending on environment
     this.metricsBuffer.push(metrics);
 
-    // 3. Broadcast to real-time subscribers (SSE)
+    // 4. Broadcast to real-time subscribers (SSE)
     this.broadcastEvent({
       id: `req_${metrics.timestamp}_${Math.random().toString(36).substring(2, 6)}`,
       type: 'request',
@@ -307,6 +337,7 @@ export class Monitor {
         statusCode: metrics.statusCode,
         durationMs: metrics.durationMs,
       },
+      drift: metrics.drift,
     });
 
     if (this.isServerless) {
@@ -354,6 +385,18 @@ export class Monitor {
         !route.path.startsWith(endpoint) &&
         index === self.findIndex(r => r.path === route.path && r.method === route.method)
     );
+  }
+
+  public setOpenApiSpec(spec: any): void {
+    this.openApiManager.loadSpec(spec);
+    const documented = this.openApiManager.getDocumentedEndpoints();
+    if (documented.length > 0) {
+      this.registerDiscoveredRoutes(documented.map(d => ({ path: d.path, method: d.method })));
+    }
+  }
+
+  public getOpenApiManager(): OpenApiManager {
+    return this.openApiManager;
   }
 
   /**
@@ -410,6 +453,8 @@ export class Monitor {
       requests: this.metricsBuffer.toArray(),
       threats: this.securityBuffer.toArray(),
       discoveredRoutes: this.discoveredRoutes,
+      documentedRoutes: this.openApiManager.getDocumentedEndpoints(),
+      hasOpenApiSpec: this.openApiManager.hasSpec(),
       config: {
         enableThreatDetection: this.config.enableThreatDetection,
         maxBufferSize: this.config.maxBufferSize,

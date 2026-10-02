@@ -1,4 +1,4 @@
-import { M as Monitor } from './Monitor-nmLtlnC9.js';
+import { M as Monitor } from './Monitor-CZXJErmJ.js';
 
 declare function expressPulseMiddleware(monitor: Monitor): any;
 
