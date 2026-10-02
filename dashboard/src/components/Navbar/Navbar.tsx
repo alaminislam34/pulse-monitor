@@ -69,7 +69,9 @@ export default function PulseNavbar({
             <nav className="navbar glass-effect">
                 {/* ── Left: Brand ── */}
                 <div className="navbar-brand">
-                    <Activity size={22} strokeWidth={2.2} style={{ color: 'var(--accent-primary)' }} />
+                    <div className="brand-icon-round">
+                        <Activity size={18} strokeWidth={2.4} />
+                    </div>
                     <span className="brand-text">Pulse Monitor</span>
                     {isLiveStreaming && (
                         <span className="badge" style={{ background: 'rgba(0, 170, 69, 0.12)', color: '#00AA45', border: '1px solid rgba(0, 170, 69, 0.25)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.65rem', fontWeight: 600, padding: '0.15rem 0.45rem', borderRadius: '999px', marginLeft: '0.35rem' }}>
@@ -104,7 +106,7 @@ export default function PulseNavbar({
                 <div className="navbar-actions desktop-only">
                     <button
                         onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-                        className="icon-btn"
+                        className="icon-btn round-btn"
                         title="Toggle theme"
                     >
                         {theme === 'light' ? <Moon size={14} strokeWidth={2.2} /> : <Sun size={14} strokeWidth={2.2} />}
@@ -147,17 +149,17 @@ export default function PulseNavbar({
                 <div className="navbar-mobile-actions mobile-only">
                     <button
                         onClick={() => setMobileSearchOpen(true)}
-                        className="icon-btn"
+                        className="icon-btn round-btn"
                         title="Search"
                     >
-                        <Search size={16} strokeWidth={2.2} />
+                        <Search size={15} strokeWidth={2.2} />
                     </button>
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="icon-btn hamburger-btn"
+                        className="icon-btn round-btn hamburger-btn"
                         title="Menu"
                     >
-                        {mobileMenuOpen ? <X size={18} strokeWidth={2.5} /> : <Menu size={18} strokeWidth={2.2} />}
+                        {mobileMenuOpen ? <X size={16} strokeWidth={2.5} /> : <Menu size={16} strokeWidth={2.2} />}
                     </button>
                 </div>
             </nav>

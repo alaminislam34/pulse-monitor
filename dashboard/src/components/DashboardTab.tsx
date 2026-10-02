@@ -1,5 +1,6 @@
 import { MonitorData, RequestMetrics, SecurityAlert } from '../types';
 import { MiniSparkline, CircularGauge, TrafficAreaChart } from './Charts';
+import { Activity, AlertTriangle, Zap, ShieldAlert, ShieldCheck } from 'lucide-react';
 
 interface DashboardTabProps {
   data: MonitorData;
@@ -59,7 +60,12 @@ export function DashboardTab({ data, setActiveTab, setSelectedRequest, setSelect
         
         {/* Stat 1: Total Requests */}
         <div className="card">
-          <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-muted)' }}>Total Requests</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-muted)' }}>Total Requests</span>
+            <div className="stat-icon-round primary">
+              <Activity size={16} strokeWidth={2.4} />
+            </div>
+          </div>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: '0.25rem', marginBottom: '0.75rem' }}>
             <h3 style={{ fontSize: '1.8rem', fontWeight: 700, letterSpacing: '-0.03em' }}>{totalRequests}</h3>
             <span className="badge badge-success" style={{ fontSize: '0.65rem' }}>Active</span>
@@ -72,7 +78,12 @@ export function DashboardTab({ data, setActiveTab, setSelectedRequest, setSelect
 
         {/* Stat 2: Error Rate % */}
         <div className="card">
-          <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-muted)' }}>Error Rate %</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-muted)' }}>Error Rate %</span>
+            <div className="stat-icon-round danger">
+              <AlertTriangle size={16} strokeWidth={2.4} />
+            </div>
+          </div>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: '0.25rem', marginBottom: '0.75rem' }}>
             <h3 style={{ fontSize: '1.8rem', fontWeight: 700, letterSpacing: '-0.03em', color: errorRate > 0 ? 'var(--accent-danger)' : 'var(--text-main)' }}>{errorRate.toFixed(1)}%</h3>
             <span className={`badge ${errorRate > 0 ? 'badge-danger' : 'badge-success'}`} style={{ fontSize: '0.65rem' }}>
@@ -87,7 +98,12 @@ export function DashboardTab({ data, setActiveTab, setSelectedRequest, setSelect
 
         {/* Stat 3: Avg Latency */}
         <div className="card">
-          <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-muted)' }}>Avg Latency</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-muted)' }}>Avg Latency</span>
+            <div className="stat-icon-round success">
+              <Zap size={16} strokeWidth={2.4} />
+            </div>
+          </div>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: '0.25rem', marginBottom: '0.75rem' }}>
             <h3 style={{ fontSize: '1.8rem', fontWeight: 700, letterSpacing: '-0.03em' }}>{avgLatency.toFixed(1)} <span style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--text-muted)' }}>ms</span></h3>
             <span className="badge badge-primary" style={{ fontSize: '0.65rem' }}>p95/p99: {p95Latency.toFixed(0)}/{p99Latency.toFixed(0)}ms</span>
@@ -100,7 +116,12 @@ export function DashboardTab({ data, setActiveTab, setSelectedRequest, setSelect
 
         {/* Stat 4: Active Threats */}
         <div className="card">
-          <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-muted)' }}>Active Threats</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-muted)' }}>Active Threats</span>
+            <div className={`stat-icon-round ${threats.length > 0 ? 'danger' : 'success'}`}>
+              {threats.length > 0 ? <ShieldAlert size={16} strokeWidth={2.4} /> : <ShieldCheck size={16} strokeWidth={2.4} />}
+            </div>
+          </div>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: '0.25rem', marginBottom: '0.75rem' }}>
             <h3 style={{ fontSize: '1.8rem', fontWeight: 700, letterSpacing: '-0.03em', color: threats.length > 0 ? 'var(--accent-danger)' : 'var(--text-main)' }}>{threats.length}</h3>
             <span className={`badge ${threats.length > 0 ? 'badge-danger' : 'badge-success'}`} style={{ fontSize: '0.65rem' }}>

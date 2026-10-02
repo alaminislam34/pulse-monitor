@@ -115,12 +115,18 @@ header {
 .logo-badge {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-sm);
+  border-radius: 50%;
   background: var(--emerald-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 170, 69, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.logo-badge:hover {
+  transform: scale(1.06);
 }
 
 .nav-links {
@@ -846,6 +852,31 @@ header {
   font-weight: 600;
   border-color: #E2E8F0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.cockpit-icon-round {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(148, 163, 184, 0.12);
+  color: #64748B;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.cockpit-nav-item:hover .cockpit-icon-round {
+  background: rgba(0, 170, 69, 0.12);
+  color: #00AA45;
+  transform: scale(1.06);
+}
+
+.cockpit-nav-item.active .cockpit-icon-round {
+  background: #00AA45;
+  color: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 170, 69, 0.28);
 }
 
 .cockpit-count-badge {

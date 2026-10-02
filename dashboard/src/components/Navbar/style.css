@@ -77,7 +77,7 @@
     justify-content: center;
     gap: 0.35rem;
     padding: 0.35rem 0.65rem;
-    border-radius: 6px;
+    border-radius: 999px;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
@@ -87,19 +87,33 @@
     transition: all 0.15s ease;
 }
 
+.icon-btn.round-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
 .icon-btn:hover {
     background: var(--bg-hover);
     color: var(--text-main);
+    transform: scale(1.04);
 }
 
 .select-wrapper {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0.2rem 0.5rem;
-    border-radius: 6px;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
+    transition: all 0.15s ease;
+}
+
+.select-wrapper:hover {
+    background: var(--bg-hover);
 }
 
 .poll-select {
@@ -116,18 +130,19 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.25rem 0.6rem;
+    padding: 0.25rem 0.65rem;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border-radius: 999px;
+    transition: all 0.15s ease;
 }
 
 .avatar {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background: var(--bg-hover);
-    border: 1px solid var(--border-color);
+    background: rgba(0, 170, 69, 0.12);
+    border: 1px solid rgba(0, 170, 69, 0.25);
     color: var(--accent-primary);
     font-size: 0.65rem;
     font-weight: 700;

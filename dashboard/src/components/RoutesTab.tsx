@@ -56,21 +56,23 @@ export function RoutesTab({ discoveredRoutes, handleTestRoute }: RoutesTabProps)
                         className="flex-center"
                         style={{
                           display: 'inline-flex',
-                          padding: '0.35rem 0.65rem',
+                          padding: '0.3rem 0.65rem',
                           background: 'var(--bg-input)',
                           border: '1px solid var(--border-color)',
-                          borderRadius: '6px',
+                          borderRadius: '999px',
                           color: 'var(--text-main)',
                           fontSize: '0.7rem',
                           fontWeight: 600,
                           cursor: 'pointer',
-                          gap: '0.25rem',
+                          gap: '0.35rem',
                           transition: 'var(--transition-smooth)'
                         }}
                         onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
                         onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}
                       >
-                        <Play size={10} style={{ color: 'var(--accent-success)' }} fill="var(--accent-success)" />
+                        <div style={{ width: '16px', height: '16px', borderRadius: '50%', background: 'rgba(0, 170, 69, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Play size={8} style={{ color: 'var(--accent-success)' }} fill="var(--accent-success)" />
+                        </div>
                         Run Test
                       </button>
                     </td>

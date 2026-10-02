@@ -53,8 +53,8 @@ export function SecurityTab({ threats, selectedAlert, setSelectedAlert }: Securi
         <div className="card" style={{ height: 'fit-content', display: 'flex', flexDirection: 'column', gap: '1.25rem', borderLeft: '3px solid var(--accent-danger)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
             <h4 style={{ fontSize: '0.9rem', fontWeight: 600 }}>Threat details</h4>
-            <button onClick={() => setSelectedAlert(null)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>
-              <X size={15} />
+            <button onClick={() => setSelectedAlert(null)} className="btn-icon-round" title="Close details">
+              <X size={14} strokeWidth={2.4} />
             </button>
           </div>
 

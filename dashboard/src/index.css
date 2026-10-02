@@ -155,6 +155,119 @@ body {
   border-color: var(--border-color);
 }
 
+/* Premium Round Shape Icon System */
+.nav-icon-round {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-hover);
+  color: var(--text-muted);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.nav-link-item:hover .nav-icon-round {
+  background: rgba(0, 170, 69, 0.12);
+  color: var(--accent-primary);
+  transform: scale(1.05);
+}
+
+.nav-link-item.active .nav-icon-round {
+  background: var(--accent-primary);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 170, 69, 0.28);
+}
+
+.mobile-icon-round {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-hover);
+  color: var(--text-muted);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mobile-nav-btn.active .mobile-icon-round {
+  background: var(--accent-primary);
+  color: #FFFFFF;
+}
+
+.brand-icon-round {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(0, 170, 69, 0.12);
+  color: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 170, 69, 0.1);
+  transition: all 0.2s ease;
+}
+
+.brand-icon-round:hover {
+  transform: scale(1.06);
+  background: rgba(0, 170, 69, 0.18);
+}
+
+.stat-icon-round {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.stat-icon-round.primary {
+  background: rgba(0, 170, 69, 0.1);
+  color: var(--accent-primary);
+}
+
+.stat-icon-round.success {
+  background: rgba(0, 170, 69, 0.12);
+  color: var(--accent-primary);
+}
+
+.stat-icon-round.warning {
+  background: rgba(217, 119, 6, 0.12);
+  color: #D97706;
+}
+
+.stat-icon-round.danger {
+  background: rgba(220, 38, 38, 0.12);
+  color: var(--accent-danger);
+}
+
+.btn-icon-round {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-icon-round:hover {
+  background: var(--bg-card);
+  color: var(--text-main);
+  transform: scale(1.08);
+}
+
 /* Card Component (Stripe Style) */
 .card {
   background-color: var(--bg-card);
