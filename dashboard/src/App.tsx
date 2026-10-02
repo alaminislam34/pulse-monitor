@@ -12,6 +12,7 @@ import { RoutesTab } from './components/RoutesTab';
 import { SettingsTab } from './components/SettingsTab';
 import { ApiInspectorModal } from './components/ApiInspectorModal';
 import PulseNavbar from './components/Navbar/Navbar';
+import { DEFAULT_SWAGGER_CATALOG } from './components/defaultCatalog';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'requests' | 'security' | 'health' | 'settings' | 'routes' | 'playground'>('dashboard');
@@ -305,6 +306,16 @@ export default function App() {
     setSandboxResult({ detected, attackType, severity, details });
   };
 
+  const totalRoutesCount = useMemo(() => {
+    const map = new Set<string>();
+    DEFAULT_SWAGGER_CATALOG.forEach(d => map.add(`${d.method.toUpperCase()} ${d.path}`));
+    if (data) {
+      (data.documentedRoutes || []).forEach(d => map.add(`${d.method.toUpperCase()} ${d.path}`));
+      (data.discoveredRoutes || []).forEach(d => map.add(`${d.method.toUpperCase()} ${d.path}`));
+    }
+    return map.size;
+  }, [data?.documentedRoutes, data?.discoveredRoutes]);
+
   if (!isAuthorized) {
     return (
       <div className="full-screen-center">
@@ -399,12 +410,6 @@ export default function App() {
     hasOpenApiSpec = false 
   } = data;
 
-  const totalRoutesCount = useMemo(() => {
-    const map = new Set<string>();
-    documentedRoutes.forEach(d => map.add(`${d.method.toUpperCase()} ${d.path}`));
-    discoveredRoutes.forEach(d => map.add(`${d.method.toUpperCase()} ${d.path}`));
-    return map.size;
-  }, [documentedRoutes, discoveredRoutes]);
 
   // Recommendations
   const getRecommendations = (): Recommendation[] => {
@@ -551,7 +556,11 @@ export default function App() {
               discoveredRoutes={discoveredRoutes}
               documentedRoutes={documentedRoutes}
               hasOpenApiSpec={hasOpenApiSpec}
+              requests={requests}
+              threats={threats}
               onInspectEndpoint={handleInspectEndpoint}
+              authSecret={authSecret}
+              onRefreshData={() => fetchData()}
             />
           )}
 

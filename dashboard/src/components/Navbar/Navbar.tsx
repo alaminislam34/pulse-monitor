@@ -23,7 +23,7 @@ interface PulseNavbarProps {
 
 export default function PulseNavbar({
     theme, setTheme, searchPath, setSearchPath,
-    pollInterval, setPollInterval, isRefreshing, fetchData, system, isLiveStreaming
+    pollInterval, setPollInterval, isRefreshing, fetchData, system, isLiveStreaming: _isLiveStreaming
 }: PulseNavbarProps) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -73,12 +73,6 @@ export default function PulseNavbar({
                         <Activity size={18} strokeWidth={2.4} />
                     </div>
                     <span className="brand-text">Pulse Monitor</span>
-                    {isLiveStreaming && (
-                        <span className="badge" style={{ background: 'rgba(0, 170, 69, 0.12)', color: '#00AA45', border: '1px solid rgba(0, 170, 69, 0.25)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.65rem', fontWeight: 600, padding: '0.15rem 0.45rem', borderRadius: '999px', marginLeft: '0.35rem' }}>
-                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#00AA45' }}></span>
-                            LIVE SSE
-                        </span>
-                    )}
                 </div>
 
                 {/* ── Center: Desktop Search ── */}

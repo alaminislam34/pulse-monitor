@@ -19,7 +19,7 @@ export function DashboardTab({
   setActiveTab, 
   setSelectedRequest, 
   setSelectedAlert,
-  onInspectEndpoint 
+  onInspectEndpoint: _onInspectEndpoint 
 }: DashboardTabProps) {
   const { system, requests, threats, discoveredRoutes = [], documentedRoutes = [] } = data;
 
@@ -309,7 +309,7 @@ export function DashboardTab({
                 <div 
                   key={idx}
                   className="endpoint-row-card compact"
-                  onClick={() => onInspectEndpoint(ep)}
+                  onClick={() => setActiveTab('routes')}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexGrow: 1, minWidth: 0 }}>
                     <span className={`method-badge ${ep.method.toLowerCase()}`}>
@@ -338,13 +338,13 @@ export function DashboardTab({
                     <button 
                       onClick={(e) => {
                         e.stopPropagation();
-                        onInspectEndpoint(ep);
+                        setActiveTab('routes');
                       }}
                       className="btn-try-endpoint"
                       style={{ padding: '0.2rem 0.5rem', fontSize: '0.65rem' }}
                     >
                       <Play size={9} fill="#00AA45" color="#00AA45" />
-                      <span>Inspect & Test</span>
+                      <span>Test API</span>
                     </button>
                   </div>
                 </div>
